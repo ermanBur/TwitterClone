@@ -1,0 +1,13 @@
+﻿@model TwitterClone.Models.LoginViewModel
+
+<form asp-action="Login" asp-controller="Home" method="post">
+    <div>
+        <label for="Username">Kullanıcı Adı</label>
+        <input type="text" id="Username" name="Username" required />
+    </div>
+    <div>
+        <label for="Password">Şifre</label>
+        <input type="password" id="Password" name="Password" required />
+    </div>
+    <button type="submit">Giriş Yap</button>
+</form>

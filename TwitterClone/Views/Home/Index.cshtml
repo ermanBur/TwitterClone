@@ -3,6 +3,19 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Welcome to TwitterClone</h1>
+    <p>Learn how to create your own TwitterClone app.</p>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <!-- Yeni Kullanıcı Oluşturma Butonu -->
+    <a class="btn btn-primary" href="@Url.Action("Create", "User")">Create New User</a>
+
+    <!-- Kullanıcı Listesi Butonu -->
+    <a class="btn btn-secondary" href="@Url.Action("Index", "User")">List Users</a>
 </div>
