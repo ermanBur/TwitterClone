@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using TwitterCloneApplication.Models;
-using TwitterCloneApplication.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +10,11 @@ builder.Services.AddDbContext<TwitterCloneContext>(options =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddHttpClient();
+builder.Services.AddLogging(loggingBuilder =>
+{
+    loggingBuilder.AddConsole();
+    loggingBuilder.AddDebug();
+});
 builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();

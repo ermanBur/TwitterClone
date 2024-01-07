@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using TwitterCloneApplication.Models;
 using Microsoft.EntityFrameworkCore;
-
-namespace TwitterCloneApplication.Service;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System.Security.Cryptography;
 
 public class UserService : IUserService
 {
@@ -25,23 +25,75 @@ public class UserService : IUserService
         return await _context.Users.FindAsync(userId);
     }
 
-    public async Task CreateUserAsync(User user)
+    public async Task CreateUserAsync(User user, string password)
     {
+        // Create a salt and hash the password
+        byte[] salt = new byte[128 / 8];
+        using (var rng = RandomNumberGenerator.Create())
+        {
+            rng.GetBytes(salt);
+        }
+        string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+            password: password,
+            salt: salt,
+            prf: KeyDerivationPrf.HMACSHA256,
+            iterationCount: 10000,
+            numBytesRequested: 256 / 8));
+
+        user.PasswordHash = hashed;
+        user.Salt = Convert.ToBase64String(salt);
+
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
     }
 
     public async Task<IEnumerable<User>> GetUserFollowersAsync(int userId)
     {
-        // Bu metod, takipçileri döndürmek için veritabanınızın yapısına göre uygulanmalıdır.
-        throw new System.NotImplementedException();
+        return await _context.Follows
+                             .Where(f => f.FollowingId == userId)
+                             .Select(f => f.Follower)
+                             .ToListAsync();
     }
 
     public async Task<IEnumerable<User>> GetUserFollowingsAsync(int userId)
     {
-        // Bu metod, takip edilen kullanıcıları döndürmek için veritabanınızın yapısına göre uygulanmalıdır.
-        throw new System.NotImplementedException();
+        return await _context.Follows
+                             .Where(f => f.FollowerId == userId)
+                             .Select(f => f.Following)
+                             .ToListAsync();
     }
+
+    public async Task<bool> ValidateUserAsync(string username, string password)
+    {
+        var user = await _context.Users
+                                 .FirstOrDefaultAsync(u => u.Username == username);
+
+        if (user != null)
+        {
+            // Veritabanında saklanan salt değeri kullanarak girilen şifreyi hash'leyin
+            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: password,
+                salt: Convert.FromBase64String(user.Salt),
+                prf: KeyDerivationPrf.HMACSHA256,
+                iterationCount: 10000,
+                numBytesRequested: 256 / 8));
+
+            // Hash'lenmiş şifre ile veritabanındaki hash'lenmiş şifreyi karşılaştırın
+            return hashed == user.PasswordHash;
+        }
+
+        return false;
+    }
+    public async Task DeleteUserAsync(int userId)
+    {
+        var user = await _context.Users.FindAsync(userId);
+        if (user != null)
+        {
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+        }
+    }
+
 
     // ... Diğer gerekli metodlar...
 }
