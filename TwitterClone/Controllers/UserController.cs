@@ -4,6 +4,10 @@ using System.Threading.Tasks;
 using TwitterCloneApplication.Models;
 using Microsoft.Extensions.Logging;
 using System;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Collections.Generic;
+using System.Security.Claims; // Claims için
 
 namespace TwitterClone.Controllers
 {
@@ -31,11 +35,18 @@ namespace TwitterClone.Controllers
         {
             if (ModelState.IsValid)
             {
+                bool userExists = await _userService.ExistsUserAsync(model.Username, model.Email);
+                if (userExists)
+                {
+                    ModelState.AddModelError("", "Username or email already in use. Please choose another one.");
+                    return View(model);
+                }
+
                 var user = new User
                 {
                     Username = model.Username,
                     Email = model.Email,
-                    // Şifre hash'leme ve diğer işlemler burada yapılabilir.
+                    // Şifre ve diğer gerekli alanlar burada oluşturulmalıdır
                 };
 
                 try
@@ -53,6 +64,7 @@ namespace TwitterClone.Controllers
             return View(model);
         }
 
+
         // GET: User/Login
         public IActionResult Login()
         {
@@ -66,36 +78,42 @@ namespace TwitterClone.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (await _userService.ValidateUserAsync(model.EmailOrUsername, model.Password))
+                var result = await _userService.ValidateUserAsync(model.EmailOrUsername, model.Password);
+                if (result)
                 {
-                    // Doğrulama başarılı, kullanıcı oturumunu başlat
-                    // Oturum başlatma kodunuzu buraya ekleyin, örneğin bir cookie oluşturmak
-                    return RedirectToAction("Index", "Home"); // Kullanıcıyı anasayfaya yönlendir
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, model.EmailOrUsername),
+                        // Diğer gerekli claimler burada eklenebilir
+                    };
+
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+                    return RedirectToAction("Index", "Home");
                 }
-                else
-                {
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                }
+                ModelState.AddModelError("", "Kullanıcı adı veya sifre yanlıs");
             }
-            return View(model);
+            return View("~/Views/Home/Login.cshtml", model);
         }
 
-        // GET: User
+        // GET: User/Index
         public async Task<IActionResult> Index()
         {
             var users = await _userService.GetAllUsersAsync();
             return View(users);
         }
 
-        // GET: User/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        /*// GET: User/Delete/5
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var user = await _userService.GetUserAsync(id.Value);
+            var user = _userService.GetUserById(id.Value); // GetUserById metodu varsayılan olarak senkron olduğu için 'await' kullanılmıyor
             if (user == null)
             {
                 return NotFound();
@@ -109,8 +127,16 @@ namespace TwitterClone.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _userService.DeleteUserAsync(id);
+            var result = await _userService.DeleteUserAsync(id);
+            if (result)
+            {
+                TempData["SuccessMessage"] = "User deleted successfully!";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Error occurred while deleting the user.";
+            }
             return RedirectToAction(nameof(Index));
-        }
+        }*/
     }
 }

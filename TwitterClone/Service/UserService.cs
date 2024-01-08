@@ -27,7 +27,6 @@ public class UserService : IUserService
 
     public async Task CreateUserAsync(User user, string password)
     {
-        // Create a salt and hash the password
         byte[] salt = new byte[128 / 8];
         using (var rng = RandomNumberGenerator.Create())
         {
@@ -70,7 +69,6 @@ public class UserService : IUserService
 
         if (user != null)
         {
-            // Veritabanında saklanan salt değeri kullanarak girilen şifreyi hash'leyin
             string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
                 password: password,
                 salt: Convert.FromBase64String(user.Salt),
@@ -78,11 +76,15 @@ public class UserService : IUserService
                 iterationCount: 10000,
                 numBytesRequested: 256 / 8));
 
-            // Hash'lenmiş şifre ile veritabanındaki hash'lenmiş şifreyi karşılaştırın
             return hashed == user.PasswordHash;
         }
 
         return false;
+    }
+    public async Task<bool> ExistsUserAsync(string username, string email)
+    {
+        bool userExists = await _context.Users.AnyAsync(u => u.Username.ToLower() == username.ToLower() || u.Email.ToLower() == email.ToLower());
+        return userExists;
     }
     public async Task DeleteUserAsync(int userId)
     {
@@ -95,5 +97,4 @@ public class UserService : IUserService
     }
 
 
-    // ... Diğer gerekli metodlar...
 }
