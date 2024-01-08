@@ -1,29 +1,10 @@
 ﻿@model IEnumerable<TwitterCloneApplication.Models.User>
 
-@{
-    ViewData["Title"] = "User List";
-}
-
-<h2>User List</h2>
-
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success" role="alert">
-        @TempData["SuccessMessage"]
-    </div>
-}
-
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger" role="alert">
-        @TempData["ErrorMessage"]
-    </div>
-}
+<!-- ... diğer HTML ve View içeriği ... -->
 
 <table class="table">
     <thead>
         <tr>
-            <th>ID</th>
             <th>Username</th>
             <th>Email</th>
             <th>Actions</th>
@@ -33,13 +14,10 @@
         @foreach (var user in Model)
         {
             <tr>
-                <td>@user.Id</td>
                 <td>@user.Username</td>
                 <td>@user.Email</td>
                 <td>
-                    <a href="@Url.Action("Edit", "User", new { id = user.Id })">Edit</a> |
-                    <a href="@Url.Action("Details", "User", new { id = user.Id })">Details</a> |
-                    <a href="@Url.Action("Delete", "User", new { id = user.Id })">Delete</a>
+                    <a asp-action="Delete" asp-route-id="@user.Id">Delete</a>
                 </td>
             </tr>
         }

@@ -1,1 +1,8 @@
-﻿
+﻿# Örnek .gitignore içeriği
+bin/
+obj/
+appsettings.json
+appsettings.Development.json
+*.user
+*.suo
+*.userprefs

@@ -4,10 +4,10 @@ namespace TwitterClone.Models
 {
     public class LoginViewModel
     {
-        [Required(ErrorMessage = "Kullanıcı adı gereklidir.")]
-        public string Username { get; set; }
+        [Required(ErrorMessage = "Email or username is required.")]
+        public string EmailOrUsername { get; set; }
 
-        [Required(ErrorMessage = "Şifre gereklidir.")]
+        [Required(ErrorMessage = "Password is required.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
     }

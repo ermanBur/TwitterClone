@@ -1,6 +1,418 @@
-﻿@{
-    ViewData["Title"] = "Privacy Policy";
-}
-<h1>@ViewData["Title"]</h1>
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Profile</title>
+    <link rel="stylesheet" href="~/css/main.css">
+</head>
+<body>
+    <div class="main-flex-container">
+        <div class="left-flex-container flex-item">
+            <div class="nav-links">
+                <ul>
+                   
+                    <li class="nav-items logo"><a href="#"><i class="fab fa-twitter"></i></a></li>
 
-<p>Use this page to detail your site's privacy policy.</p>
+                    <li class="nav-items current-page"><a href="~/Home"><i class="fas fa-home"></i> Home</a></li>
+
+                    <li class="nav-items"><a href="#"><i class="fas fa-hashtag"></i> Explore</a></li>
+
+                    <li class="nav-items"><a href="#"><i class="far fa-bell"></i> Notifications</a></li>
+
+                    <li class="nav-items"><a href="#"><i class="far fa-envelope"></i> Messages</a></li>
+
+                    <li class="nav-items"><a href="#"><i class="far fa-bookmark"></i> Bookmarks</a></li>
+
+                    <li class="nav-items"><a href="#"><i class="far fa-list-alt"></i> Lists</a></li>
+
+                    <li class="nav-items"><a href="~/Home/Privacy"><i class="far fa-user"></i> Profile</a></li>
+
+                    <li class="nav-items"><a href="#"><i class="fas fa-ellipsis-h more-icon"></i> More</a></li>
+                </ul>
+            </div>
+            <div class="tweet"><a href="#">Tweet</a></div>
+            <div class="profile-box">
+                <img src="~/img/profile.jpg" alt="profile">
+                <div class="profile-link">
+                    <p class="full-name">David Herbert</p>
+                    <p class="user-name"></p>
+                </div>
+                <div class="options-icon"><i class="fas fa-caret-down"></i></div>
+            </div>
+        </div>
+
+        @* orta kısım *@
+        <div class="twitter-column-2">
+            <div class="column-2-header">
+                <div class="column-2-head-icon">
+                    <i style='font-size:24px' class='fas'>&#xf060;</i>
+                </div>
+                <div class="column-2-head-user">
+                    <h2>David Herbert</h2>
+                    <P>225 Tweets</P>
+                </div>
+            </div>
+            <img class="column-2-banner" src="~/img/profile.jpg" alt="profile pics">
+            <div class="column-2-user-tab">
+                <div class="user-tab-1">
+                    <div class="user-tab-1-img">
+                        <img src="~/img/profile.jpg" alt="My picture">
+                    </div>
+                    <div class="user-tab-1-cta">
+                        <div class="cta-4">
+                            <button>Edit Profile</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="user-tab-2">
+                    <h2>David Herbert</h2>  
+                    
+                </div>
+                <div class="user-tab-3">
+                    <div class="tab-3-first tab-3-item">
+                        <span> <i style='font-size:22px' class='fas'>&#xf57d;</i> </span>
+                        <p>Science & Technology</p>
+                        <span><iconify-icon class="tab-3-item-icon" icon="material-symbols:info-outline-rounded"></iconify-icon></span>
+                    </div>
+                    <div class="tab-3-second tab-3-item">
+                        <span> <i style='font-size:24px' class='fab'>&#xf167;</i>  </span>
+                        <p>David Herbert</p>
+                    </div>
+                    <div class="tab-3-third tab-3-item">
+                        <span> <i style='font-size:24px' class='far'>&#xf073;</i> </span>
+                        <p>Joined August 2022</p>
+                    </div>
+                </div>
+                <div class="user-tab-4">
+                    <a class="tab-4-item" href="#">
+                        <h2>48</h2>
+                        <span>Following</span>
+                    </a>
+                    <a class="tab-4-item" href="#">
+                        <h2>30</h2>
+                        <span>Followers</span>
+                    </a>
+                </div>
+                <div class="user-tab-5">
+                    <a class="tab-5-nav" href="#">Tweets</a>
+                    <a class="tab-5-nav" href="#">Tweets & Replies</a>
+                    <a class="tab-5-nav" href="#">Media</a>
+                    <a class="tab-5-nav" href="#">Likes</a>
+                </div>
+            </div>
+            <hr>
+            <div class="column-2-tweet">
+                <div class="tweet-avatar">
+                    <img src="~/images/elon.jpg" alt="Elon Musk">
+                </div>
+                <div class="tweet-content-container">
+                    <div class="tweet-user-details">
+                        <a href="#">Elon Musk</a>
+                        <span> .Aug 28</span>
+                    </div>
+                    <div class="tweet-content">
+                        <p>From time to time, I will share some things that seem to be working for me, in case you find it helpful.</p>
+                    </div>
+                    <div class="content-icons">
+                        <i class="far fa-comment blue"> 109</i>
+                        <i class="fas fa-retweet green"> 865</i>
+                        <i class="far fa-heart red">1.6k</i>
+                        <i class="fas fa-chevron-up blue"></i>
+                    </div>
+                </div>
+            </div>
+            <hr>
+
+            <div class="column-2-tweet">
+                <div class="tweet-avatar">
+                    <img src="~/images/elon.jpg" alt="Elon Musk">
+                </div>
+                <div class="tweet-content-container">
+                    <div class="tweet-user-details">
+                        <a href="#">Elon Musk</a>
+                        <span> .Aug 28</span>
+                    </div>
+                    <div class="tweet-content">
+                        <p>From time to time, I will share some things that seem to be working for me, in case you find it helpful.</p>
+                    </div>
+                    <div class="content-icons">
+                        <i class="far fa-comment blue"> 109</i>
+                        <i class="fas fa-retweet green"> 865</i>
+                        <i class="far fa-heart red">1.6k</i>
+                        <i class="fas fa-chevron-up blue"></i>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="column-2-tweet">
+                <div class="tweet-avatar">
+                    <img src="~/images/elon.jpg" alt="Elon Musk">
+                </div>
+                <div class="tweet-content-container">
+                    <div class="tweet-user-details">
+                        <a href="#">Elon Musk</a>
+                        <span> .Aug 28</span>
+                    </div>
+                    <div class="tweet-content">
+                        <p>From time to time, I will share some things that seem to be working for me, in case you find it helpful.</p>
+                    </div>
+                    <div class="content-icons">
+                        <i class="far fa-comment blue"> 109</i>
+                        <i class="fas fa-retweet green"> 865</i>
+                        <i class="far fa-heart red">1.6k</i>
+                        <i class="fas fa-chevron-up blue"></i>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="column-2-tweet">
+                <div class="tweet-avatar">
+                    <img src="~/images/elon.jpg" alt="Elon Musk">
+                </div>
+                <div class="tweet-content-container">
+                    <div class="tweet-user-details">
+                        <a href="#">Elon Musk</a>
+                        <span> .Aug 28</span>
+                    </div>
+                    <div class="tweet-content">
+                        <p>From time to time, I will share some things that seem to be working for me, in case you find it helpful.</p>
+                    </div>
+                    <div class="content-icons">
+                        <i class="far fa-comment blue"> 109</i>
+                        <i class="fas fa-retweet green"> 865</i>
+                        <i class="far fa-heart red">1.6k</i>
+                        <i class="fas fa-chevron-up blue"></i>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="column-2-tweet">
+                <div class="tweet-avatar">
+                    <img src="~/images/elon.jpg" alt="Elon Musk">
+                </div>
+                <div class="tweet-content-container">
+                    <div class="tweet-user-details">
+                        <a href="#">Elon Musk</a>
+                        <span> .Aug 28</span>
+                    </div>
+                    <div class="tweet-content">
+                        <p>From time to time, I will share some things that seem to be working for me, in case you find it helpful.</p>
+                    </div>
+                    <div class="content-icons">
+                        <i class="far fa-comment blue"> 109</i>
+                        <i class="fas fa-retweet green"> 865</i>
+                        <i class="far fa-heart red">1.6k</i>
+                        <i class="fas fa-chevron-up blue"></i>
+                    </div>
+                </div>
+            </div>
+            <hr>
+        </div>
+
+        @* sağ kısım *@
+
+        <div class="twitter-column-3">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search Twitter">
+            </div>
+
+
+            @* <div class="column-3-tab-1">
+                <input type="text" class="twitter-search-field" placeholder="Search Twitter">
+                <iconify-icon class="twitter-search-icon" icon="material-symbols:search-rounded"></iconify-icon>
+            </div> *@
+            <div class="column-3-tab-2">
+                <div class="tab-2-head">
+                    <h2>You might like</h2>
+                </div>
+                <div class="tab-2-suggest">
+                    <div class="suggest-image">
+                        <img src="~/img/user6.jpg" alt="">
+                    </div>
+                    <div class="suggest-user">
+                        <a href="#">Linda Shelton #BlackLivesMatter</a>
+                        <p></p>
+                    </div>
+                    <div class="tab-2-btn">
+                        <button>Follow</button>
+                    </div>
+                </div>
+
+                <div class="tab-2-suggest">
+                    <div class="suggest-image">
+                        <img src="~/images/first.png" alt="">
+                    </div>
+                    <div class="suggest-user">
+                        <a href="#">John Mark</a>
+                        <p></p>
+                    </div>
+                    <div class="tab-2-btn">
+                        <button>Follow</button>
+                    </div>
+                </div>
+
+                <div class="tab-2-suggest">
+                    <div class="suggest-image">
+                        <img src="~/img/user7.jpg" alt="">
+                    </div>
+                    <div class="suggest-user">
+                        <a href="#">Gavin Johnson #JavaScript</a>
+                        <p></p>
+                    </div>
+                    <div class="tab-2-btn">
+                        <button>Follow</button>
+                    </div>
+                </div>
+
+                <div class="tab-2-suggest">
+                    <div class="suggest-image">
+                        <img src="~/img/user8.jpg" alt="">
+                    </div>
+                    <div class="suggest-user">
+                        <a href="#">William D Gallucci</a>
+                        <p></p>
+                    </div>
+                    <div class="tab-2-btn">
+                        <button>Follow</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="trends">
+                <ul>
+                    <li class="nav-list header">
+                        <h2>Trends for you</h2>
+                        <i class="fas fa-cog">
+                        </i>
+                    <li class="nav-list">
+                        <div class="trend-list">
+                            <p class="sub-text">Trending in Naija</p>
+                            <p class="main-text">#BBNaija</p>
+                            <p class="sub-text">274K Tweets</p>
+                        </div>
+                        <div class="trend-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </li>
+                    <li class="nav-list">
+                        <div class="trend-list">
+                            <p class="sub-text">Trending in Naija</p>
+                            <p class="main-text">#TaylorSwift</p>
+                            <p class="sub-text">154K Tweets</p>
+                        </div>
+                        <div class="trend-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </li>
+                    <li class="nav-list">
+                        <div class="trend-list">
+                            <p class="sub-text">Trending in Naija</p>
+                            <p class="main-text">#Lover</p>
+                            <p class="sub-text">135K Tweets</p>
+                        </div>
+                        <div class="trend-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </li>
+                    <li class="nav-list">
+                        <div class="trend-list">
+                            <p class="sub-text">Trending in Naija</p>
+                            <p class="main-text">#Dora</p>
+                            <p class="sub-text">124K Tweets</p>
+                        </div>
+                        <div class="trend-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </li>
+                    <li class="nav-list">
+                        <div class="trend-list">
+                            <p class="sub-text">Trending in Naija</p>
+                            <p class="main-text">#TGIF</p>
+                            <p class="sub-text">43K Tweets</p>
+                        </div>
+                        <div class="trend-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </li>
+
+
+                    <li class="nav-list"><a href="#">Show more</a></li>
+                </ul>
+            </div>
+
+
+
+
+
+            @* <div class="column-3-tab-3">
+                <div class="tab-2-head-trend">
+                    <h3>Trends for you</h3>
+                </div>
+                <div class="tab-2-trend">
+                    <div class="trend-1">
+                        <p>Trending in Nigeria</p>
+                        <h4>#ElectionResult</h4>
+                        <p>75.2K Tweet</p>
+                    </div>
+                    <div class="trending-icon">
+                        <iconify-icon class="trend-icon" icon="ic:baseline-more-horiz"></iconify-icon>
+                    </div>
+                </div>
+
+                <div class="tab-2-trend">
+                    <div class="trend-1">
+                        <p>Trending in Nigeria</p>
+                        <h4>#ElectionResult</h4>
+                        <p>75.2K Tweet</p>
+                    </div>
+                    <div class="trending-icon">
+                        <iconify-icon class="trend-icon" icon="ic:baseline-more-horiz"></iconify-icon>
+                    </div>
+                </div>
+
+                <div class="tab-2-trend">
+                    <div class="trend-1">
+                        <p>Trending in Nigeria</p>
+                        <h4>#ElectionResult</h4>
+                        <p>75.2K Tweet</p>
+                    </div>
+                    <div class="trending-icon">
+                        <iconify-icon class="trend-icon" icon="ic:baseline-more-horiz"></iconify-icon>
+                    </div>
+                </div>
+
+                <div class="tab-2-trend">
+                    <div class="trend-1">
+                        <p>Trending in Nigeria</p>
+                        <h4>#ElectionResult</h4>
+                        <p>75.2K Tweet</p>
+                    </div>
+                    <div class="trending-icon">
+                        <iconify-icon class="trend-icon" icon="ic:baseline-more-horiz"></iconify-icon>
+                    </div>
+                </div>
+
+                <div class="tab-2-trend">
+                    <div class="trend-1">
+                        <p>Trending in Nigeria</p>
+                        <h4>#ElectionResult</h4>
+                        <p>75.2K Tweet</p>
+                    </div>
+                    <div class="trending-icon">
+                        <iconify-icon class="trend-icon" icon="ic:baseline-more-horiz"></iconify-icon>
+                    </div>
+                </div>
+            </div> *@
+        </div>
+    </div>
+
+
+
+    
+
+
+</body>
+</html>
