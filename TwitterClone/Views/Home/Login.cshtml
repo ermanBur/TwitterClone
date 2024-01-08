@@ -23,17 +23,19 @@
                 <span>Sign in with Apple</span>
             </button>
         </div>
-        <h5>Or</h5>
+        <h5>Or</h5>&nbsp;
         <div class="box box-two">
-            <form asp-action="Login" asp-controller="Register" method="post">
+            <form asp-action="Login" asp-controller="User" method="post">
                 @Html.AntiForgeryToken()
-                <input asp-for="EmailOrUsername" type="text" placeholder="Phone, email, or username" required>
-                <input asp-for="Password" type="password" placeholder="Password" required>
-                <button type="submit" class="next-btn">Next</button>
+                @Html.ValidationSummary(true, "", new{@class = "text-danger"})
+                <input asp-for="EmailOrUsername" type="text" placeholder="Phone, email, or username" required>&nbsp;
+                <input asp-for="Password" type="password" placeholder="Password" required>&nbsp;
+                <button type="submit" class="next-btn">Next</button>&nbsp;
             </form>
-            <button>Forget password?</button>
+            <!-- Buraya şifre sıfırlama işlevinizin linkini ekleyebilirsiniz -->
+            <a href="şifre-sıfırlama-linki">Forget password?</a>&nbsp;
         </div>
-        <p>Don't have an account? <a asp-action="Register" asp-controller="Home">Sign Up</a></p>
+        <p>Don't have an account? <a asp-action="Register" asp-controller="User">Sign Up</a></p>
     </div>
 </body>
 </html>
