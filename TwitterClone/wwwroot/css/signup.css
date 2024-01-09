@@ -8,18 +8,20 @@
 }
 
 body {
-    min-height: 100vh;
+    /*min-height: 120vh;*/
     /*display: flex;*/
     align-items: center;
     justify-content: center;
     background: rgb(219, 217, 217);
+    font-size: 1.2rem;
+    line-height: 1.6;
 }
 
 .wrapper {
     position: relative;
     max-width: 430px;
     margin-top: 150px;
-    margin-left: 350px;
+    margin-left: 420px;
     width: 100%;
     background: #fff;
     padding: 34px;
