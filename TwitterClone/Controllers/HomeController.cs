@@ -37,5 +37,14 @@ namespace TwitterClone.Controllers
         {
             return View("~/Views/User/Register.cshtml");
         }
+            
+        public IActionResult EditProfile()
+        {
+            return View();  
+        }public IActionResult Settings()
+        {
+            return View();
+        }
+
     }
 }
