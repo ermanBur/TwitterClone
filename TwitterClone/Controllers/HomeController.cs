@@ -1,13 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TwitterClone.Models; 
+using TwitterClone.Models;
+using TwitterClone.Service;
 
 namespace TwitterClone.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IPostService _postService;
+
+        public HomeController(IPostService postService)
+        {
+            _postService = postService;
+        }
+
         public IActionResult Index()
         {
-            return View();
+            var model = new IndexViewModel();
+            model.Posts = _postService.GetPostList();
+            return View(model);
         }
 
         public IActionResult Privacy()
