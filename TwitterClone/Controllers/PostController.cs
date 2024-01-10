@@ -43,31 +43,27 @@ namespace TwitterClone.Controllers
             return NoContent();
         }
         [HttpPost]
-        public async Task<ActionResult<CreatePostDto>> Create(CreatePostDto request)
+        public async Task<ActionResult<CreatePostDto>> Create(CreatePostDto request, [FromServices] IPostService postService)
         {
             //IHttpContextAccessor httpContextAccessor;
             //var nameId = httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier);
             //nameId.Value;
             {
-                var user = await _context.Users.FindAsync(request.UserId);
-                if (user == null)
-                    return NotFound();
-
-                var newPost = new Post
+                var result = await _postService.CreatePost(request);
+                if(result != null)
                 {
-                    Content = request.Content,
-                    User = user,
-                    PostedOn = DateTime.Now,
-                };
-
-                _context.Posts.Add(newPost);
-                await _context.SaveChangesAsync();
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    return NotFound();
+                }
 
                 // GetPost async değilse ve doğrudan Post dönüyorsa:
                 //return GetPost(newPost.Id); // Eğer GetPost(int id) senkron çalışıyorsa
 
                 // GetPost async ise ve Task<ActionResult<Post>> dönüyorsa:
-                return RedirectToAction("Index", "Home"); // Eğer GetPost(int id) asenkron çalışıyorsa
+                // Eğer GetPost(int id) asenkron çalışıyorsa
             }
             
         }
