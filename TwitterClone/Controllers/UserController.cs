@@ -83,6 +83,7 @@ namespace TwitterClone.Controllers
                 {
                     var claims = new List<Claim>
                     {
+                        //new Claim(ClaimTypes.NameIdentifier, result.),
                         new Claim(ClaimTypes.Name, model.EmailOrUsername),
                         // Diğer gerekli claimler burada eklenebilir
                     };

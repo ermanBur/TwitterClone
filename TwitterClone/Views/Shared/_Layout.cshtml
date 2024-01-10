@@ -7,58 +7,149 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/TwitterClone.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/style.css">
+    <link rel="stylesheet" href="~/css/all.css">
 </head>
 <body>
-    @* <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TwitterClone</a> 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                        <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Profile</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
-                        </li>
-                    </ul> 
-                </div>
+
+    <div class="main-flex-container">
+
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["SuccessMessage"]
             </div>
-        </nav>
-    </header> *@
-    <div class="container">
-        <main role="main" class="pb-3">
+        }
 
-            @if (TempData["SuccessMessage"] != null)
-            {
-                <div class="alert alert-success">
-                    @TempData["SuccessMessage"]
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+
+        <div class="left-flex-container flex-item">
+            <div class="nav-links">
+                <ul>
+
+                    <li class="nav-items logo"><a href="#"><i class="fab fa-twitter"></i></a></li>
+
+                    <li class="nav-items current-page"><a href="~/Home/Index"><i class="fas fa-home"></i> Anasayfa</a></li>
+
+                    <li class="nav-items"><a href="#"><i class="fas fa-hashtag"></i> Explore</a></li>
+
+                    <li class="nav-items"><a href="#"><i class="far fa-bell"></i> Notifications</a></li>
+
+                    <li class="nav-items"><a href="#"><i class="far fa-envelope"></i> Messages</a></li>
+
+                    <li class="nav-items"><a href="#"><i class="far fa-bookmark"></i> Bookmarks</a></li>
+
+                    <li class="nav-items"><a href="#"><i class="far fa-list-alt"></i> Lists</a></li>
+
+                    <li class="nav-items"><a href="~/Home/Privacy"><i class="far fa-user"></i> Profil</a></li>
+
+                    <li class="nav-items"><a href="~/Home/Settings"><i class="fas fa-cogs"></i> Ayarlar</a></li>
+                </ul>
+            </div>
+            <div class="tweet"><a href="#">Tweet</a></div>
+            <div class="profile-box">
+                <img src="~/img/profile.jpg" alt="profile">
+                <div class="profile-link">
+                    <p class="full-name">David Herbert</p>
+                    <p class="user-name"></p>
                 </div>
-            }
+                <div class="options-icon"><i class="fas fa-caret-down"></i></div>
+            </div>
+        </div>
 
-            @if (TempData["ErrorMessage"] != null)
-            {
-                <div class="alert alert-danger">
-                    @TempData["ErrorMessage"]
+        @RenderBody()
+
+        <div class="right-flex-container flex-item">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search Twitter">
+            </div>
+
+            <div class="trends">
+                <ul>
+                    <li class="nav-list header">
+                        <h2>Trends for you</h2>
+                        <i class="fas fa-cog">
+                        </i>
+                    <li class="nav-list">
+                        <div class="trend-list">
+                            <p class="sub-text">Trending in Naija</p>
+                            <p class="main-text">#BBNaija</p>
+                            <p class="sub-text">274K Tweets</p>
+                        </div>
+                        <div class="trend-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </li>
+                    <li class="nav-list">
+                        <div class="trend-list">
+                            <p class="sub-text">Trending in Naija</p>
+                            <p class="main-text">#TaylorSwift</p>
+                            <p class="sub-text">154K Tweets</p>
+                        </div>
+                        <div class="trend-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </li>
+                    <li class="nav-list">
+                        <div class="trend-list">
+                            <p class="sub-text">Trending in Naija</p>
+                            <p class="main-text">#Lover</p>
+                            <p class="sub-text">135K Tweets</p>
+                        </div>
+                        <div class="trend-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </li>
+                    <li class="nav-list">
+                        <div class="trend-list">
+                            <p class="sub-text">Trending in Naija</p>
+                            <p class="main-text">#Dora</p>
+                            <p class="sub-text">124K Tweets</p>
+                        </div>
+                        <div class="trend-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </li>
+                    <li class="nav-list">
+                        <div class="trend-list">
+                            <p class="sub-text">Trending in Naija</p>
+                            <p class="main-text">#TGIF</p>
+                            <p class="sub-text">43K Tweets</p>
+                        </div>
+                        <div class="trend-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </li>
+
+
+                    <li class="nav-list"><a href="#">Show more</a></li>
+                </ul>
+            </div>
+
+            <div class="right-footer">
+                <div class="footer-links">
+                    <a href="#" class="sub-text">Terms</a>
+                    <a href="#" class="sub-text">Privacy policy</a>
+                    <a href="#" class="sub-text">Ads info</a>
+                    <a href="#" class="sub-text">more</a>
+                    <i class="fas fa-chevron-down sub-text"></i>
                 </div>
-            }
+                <div class="footer-copyright">
+                    <p class="sub-text">&copy; 2020 Twitter, Inc.</p>
+                </div>
 
-            @RenderBody()
-        </main>
+            </div>
+
+        </div>
     </div>
 
-   @*  <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - TwitterClone - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer> *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

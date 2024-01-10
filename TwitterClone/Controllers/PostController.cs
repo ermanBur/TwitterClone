@@ -45,7 +45,9 @@ namespace TwitterClone.Controllers
         [HttpPost]
         public async Task<ActionResult<CreatePostDto>> Create(CreatePostDto request)
         {
-            
+            //IHttpContextAccessor httpContextAccessor;
+            //var nameId = httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier);
+            //nameId.Value;
             {
                 var user = await _context.Users.FindAsync(request.UserId);
                 if (user == null)

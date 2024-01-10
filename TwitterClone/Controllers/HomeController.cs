@@ -45,7 +45,7 @@ namespace TwitterClone.Controllers
         // GET: Home/Register
         public IActionResult Register()
         {
-            return View("~/Views/User/Register.cshtml");
+            return RedirectToAction("Register", "User");
         }
             
         public IActionResult EditProfile()
