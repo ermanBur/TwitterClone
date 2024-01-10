@@ -303,7 +303,7 @@ ul {
     flex-flow: row;
     justify-content: center;
     font-size: 15px;
-    width: 100%;
+    width: 500px;
     line-height: 1.75rem;
     padding-top: 0.5rem;
     border-bottom: 1px solid rgb(230, 236, 240);
@@ -337,6 +337,8 @@ ul {
     display: flex;
     flex-flow: column nowrap;
     color: rgb(20, 23, 26);
+    width:420px;
+    overflow-wrap:break-word;
 }
 
     .user-content-box .user-names {
