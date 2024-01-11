@@ -11,7 +11,7 @@ public interface IUserService
     Task<IEnumerable<User>> GetUserFollowersAsync(int userId);
     Task<IEnumerable<User>> GetUserFollowingsAsync(int userId);
     //Task CreateUserAsync(User user);
-    Task<bool> ValidateUserAsync(string username, string password);
+    Task<User> ValidateUserAsync(string username, string password);
     Task DeleteUserAsync(int userId);
 
 

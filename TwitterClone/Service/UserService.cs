@@ -62,7 +62,7 @@ public class UserService : IUserService
                              .ToListAsync();
     }
 
-    public async Task<bool> ValidateUserAsync(string username, string password)
+    public async Task<User> ValidateUserAsync(string username, string password)
     {
         var user = await _context.Users
                                  .FirstOrDefaultAsync(u => u.Username == username);
@@ -76,11 +76,15 @@ public class UserService : IUserService
                 iterationCount: 10000,
                 numBytesRequested: 256 / 8));
 
-            return hashed == user.PasswordHash;
+            if (hashed == user.PasswordHash)
+            {
+                return user; // Kullanıcı bilgileriyle birlikte kullanıcı nesnesini döndür
+            }
         }
 
-        return false;
+        return null; // Doğrulama başarısızsa veya kullanıcı bulunamazsa null döndür
     }
+
     public async Task<bool> ExistsUserAsync(string username, string email)
     {
         bool userExists = await _context.Users.AnyAsync(u => u.Username.ToLower() == username.ToLower() || u.Email.ToLower() == email.ToLower());

@@ -19,6 +19,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+builder.Services.AddHttpContextAccessor();
 
 // Logging yapılandırması
 builder.Services.AddLogging(loggingBuilder =>

@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using TwitterClone.Dto;
 using TwitterClone.Service;
 using TwitterCloneApplication.Models;
@@ -10,11 +11,14 @@ namespace TwitterClone.Controllers
     {
         private readonly TwitterCloneContext _context;
         private readonly IPostService _postService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public PostController(TwitterCloneContext context, IPostService postService) 
+
+        public PostController(TwitterCloneContext context, IPostService postService, IHttpContextAccessor httpContextAccessor) 
         {
             _context = context;
             _postService = postService;
+            _httpContextAccessor = httpContextAccessor;
         }
         [HttpGet]
         public async Task<ActionResult<List<PostDto>>> GetPostList()
@@ -43,34 +47,46 @@ namespace TwitterClone.Controllers
             return NoContent();
         }
         [HttpPost]
-        public async Task<ActionResult<CreatePostDto>> Create(CreatePostDto request)
+        public async Task<IActionResult> Create(CreatePostDto createPostDto)
         {
-            //IHttpContextAccessor httpContextAccessor;
-            //var nameId = httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier);
-            //nameId.Value;
+            var userIdString = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!int.TryParse(userIdString, out int userId))
             {
-                var user = await _context.Users.FindAsync(request.UserId);
-                if (user == null)
-                    return NotFound();
-
-                var newPost = new Post
-                {
-                    Content = request.Content,
-                    User = user,
-                    PostedOn = DateTime.Now,
-                };
-
-                _context.Posts.Add(newPost);
-                await _context.SaveChangesAsync();
-
-                // GetPost async değilse ve doğrudan Post dönüyorsa:
-                //return GetPost(newPost.Id); // Eğer GetPost(int id) senkron çalışıyorsa
-
-                // GetPost async ise ve Task<ActionResult<Post>> dönüyorsa:
-                return RedirectToAction("Index", "Home"); // Eğer GetPost(int id) asenkron çalışıyorsa
+                return BadRequest("User ID is invalid.");
             }
-            
+
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            var newPost = new Post
+            {
+                Content = createPostDto.Content,
+                UserId = userId, // UserId'yi doğrudan atayın
+                PostedOn = DateTime.Now
+            };
+
+            _context.Posts.Add(newPost);
+            await _context.SaveChangesAsync();
+
+            var newPostDto = new PostDto
+            {
+                Id = newPost.Id,
+                Content = newPost.Content,
+                PostedOn = newPost.PostedOn,
+                User = new UserDto
+                {
+                    Id = user.Id,
+                    Username = user.Username
+                }
+            };
+
+            return RedirectToAction("Index", "Home");
         }
+
+
 
     }
 }
