@@ -68,8 +68,8 @@ ul {
     padding: 10px 15px;
 }
 
-.current-page a {
-    color: rgba(29,161,242,1.00);
+.currentpage2 a {
+    
 }
 
 .nav-links a:hover {
@@ -256,9 +256,13 @@ ul {
     font-size: 12px;
     font-weight: 600;
 }
-
+.currentpage2 a{
+    color: rgba(29,161,242,1.00);
+}
 .column-2-banner {
     width: 100%;
+    overflow: hidden;
+    height: 209px;
 }
 
 .user-tab-1 {
