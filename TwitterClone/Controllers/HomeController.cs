@@ -22,7 +22,9 @@ namespace TwitterClone.Controllers
 
         public IActionResult Privacy()
         {
-            return View();
+            var model = new PrivacyViewModel();
+            model.Posts = _postService.GetPostList();
+            return View(model);
         }
 
         public IActionResult Login()

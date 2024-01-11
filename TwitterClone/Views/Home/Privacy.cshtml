@@ -1,4 +1,4 @@
-﻿
+﻿@model PrivacyViewModel
 <link rel="stylesheet" href="~/css/main.css">
 
 <div class="twitter-column-2">
@@ -61,111 +61,33 @@
 
     </div>
     <hr>
-    <div class="column-2-tweet">
-        <div class="tweet-avatar">
-            <img src="~/images/elon.jpg" alt="Elon Musk">
-        </div>
-        <div class="tweet-content-container">
-            <div class="tweet-user-details">
-                <a href="#">Elon Musk</a>
-                <span> .Aug 28</span>
+    @if(Model != null)
+    {
+        foreach(var post in Model.Posts)
+        {
+            <div class="column-2-tweet">
+                <div class="tweet-avatar">
+                    <img src="~/images/elon.jpg" alt="Elon Musk">
+                </div>
+                <div class="tweet-content-container">
+                    <div class="tweet-user-details">
+                        <a href="#">@post.User.Username</a>
+                        <span>@post.PostedOn</span>
+                    </div>
+                    <div class="tweet-content">
+                        <p>@post.Content</p>
+                    </div>
+                    <div class="content-icons">
+                        <i class="far fa-comment blue"> 109</i>
+                        <i class="fas fa-retweet green"> 865</i>
+                        <i class="far fa-heart red">1.6k</i>
+                        <i class="fas fa-chevron-up blue"></i>
+                    </div>
+                </div>
             </div>
-            <div class="tweet-content">
-                <p>From time to time, I will share some things that seem to be working for me, in case you find it helpful.</p>
-            </div>
-            <div class="content-icons">
-                <i class="far fa-comment blue"> 109</i>
-                <i class="fas fa-retweet green"> 865</i>
-                <i class="far fa-heart red">1.6k</i>
-                <i class="fas fa-chevron-up blue"></i>
-            </div>
-        </div>
-    </div>
-    <hr>
-
-    <div class="column-2-tweet">
-        <div class="tweet-avatar">
-            <img src="~/images/elon.jpg" alt="Elon Musk">
-        </div>
-        <div class="tweet-content-container">
-            <div class="tweet-user-details">
-                <a href="#">Elon Musk</a>
-                <span> .Aug 28</span>
-            </div>
-            <div class="tweet-content">
-                <p>From time to time, I will share some things that seem to be working for me, in case you find it helpful.</p>
-            </div>
-            <div class="content-icons">
-                <i class="far fa-comment blue"> 109</i>
-                <i class="fas fa-retweet green"> 865</i>
-                <i class="far fa-heart red">1.6k</i>
-                <i class="fas fa-chevron-up blue"></i>
-            </div>
-        </div>
-    </div>
-    <hr>
-    <div class="column-2-tweet">
-        <div class="tweet-avatar">
-            <img src="~/images/elon.jpg" alt="Elon Musk">
-        </div>
-        <div class="tweet-content-container">
-            <div class="tweet-user-details">
-                <a href="#">Elon Musk</a>
-                <span> .Aug 28</span>
-            </div>
-            <div class="tweet-content">
-                <p>From time to time, I will share some things that seem to be working for me, in case you find it helpful.</p>
-            </div>
-            <div class="content-icons">
-                <i class="far fa-comment blue"> 109</i>
-                <i class="fas fa-retweet green"> 865</i>
-                <i class="far fa-heart red">1.6k</i>
-                <i class="fas fa-chevron-up blue"></i>
-            </div>
-        </div>
-    </div>
-    <hr>
-    <div class="column-2-tweet">
-        <div class="tweet-avatar">
-            <img src="~/images/elon.jpg" alt="Elon Musk">
-        </div>
-        <div class="tweet-content-container">
-            <div class="tweet-user-details">
-                <a href="#">Elon Musk</a>
-                <span> .Aug 28</span>
-            </div>
-            <div class="tweet-content">
-                <p>From time to time, I will share some things that seem to be working for me, in case you find it helpful.</p>
-            </div>
-            <div class="content-icons">
-                <i class="far fa-comment blue"> 109</i>
-                <i class="fas fa-retweet green"> 865</i>
-                <i class="far fa-heart red">1.6k</i>
-                <i class="fas fa-chevron-up blue"></i>
-            </div>
-        </div>
-    </div>
-    <hr>
-    <div class="column-2-tweet">
-        <div class="tweet-avatar">
-            <img src="~/images/elon.jpg" alt="Elon Musk">
-        </div>
-        <div class="tweet-content-container">
-            <div class="tweet-user-details">
-                <a href="#">Elon Musk</a>
-                <span> .Aug 28</span>
-            </div>
-            <div class="tweet-content">
-                <p>From time to time, I will share some things that seem to be working for me, in case you find it helpful.</p>
-            </div>
-            <div class="content-icons">
-                <i class="far fa-comment blue"> 109</i>
-                <i class="fas fa-retweet green"> 865</i>
-                <i class="far fa-heart red">1.6k</i>
-                <i class="fas fa-chevron-up blue"></i>
-            </div>
-        </div>
-    </div>
+        }
+    }
+    
     <hr>
 </div>
 
