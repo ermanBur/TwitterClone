@@ -16,9 +16,9 @@ namespace TwitterClone.Service
             _context = context;
         }
 
-        public async Task<PostDto> CreatePost(CreatePostDto request)
+        public async Task<PostDto> CreatePost(CreatePostDto request, int userId)
         {
-            var user = await _context.Users.FindAsync(request.UserId);
+            var user = await _context.Users.FindAsync(userId);
             if (user == null)
                 return null; 
 

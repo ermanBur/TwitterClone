@@ -78,15 +78,15 @@ namespace TwitterClone.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _userService.ValidateUserAsync(model.EmailOrUsername, model.Password);
-                if (result)
+                var user = await _userService.ValidateUserAsync(model.EmailOrUsername, model.Password);
+                if (user != null)
                 {
                     var claims = new List<Claim>
-                    {
-                        //new Claim(ClaimTypes.NameIdentifier, result.),
-                        new Claim(ClaimTypes.Name, model.EmailOrUsername),
-                        // Diğer gerekli claimler burada eklenebilir
-                    };
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Username),
+                // Diğer gerekli claimler burada eklenebilir
+            };
 
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
@@ -94,10 +94,12 @@ namespace TwitterClone.Controllers
 
                     return RedirectToAction("Index", "Home");
                 }
-                ModelState.AddModelError("", "Kullanıcı adı veya sifre yanlıs");
+                ModelState.AddModelError("", "Kullanıcı adı veya şifre yanlış");
             }
             return View("~/Views/Home/Login.cshtml", model);
         }
+
+
 
         // GET: User/Index
         public async Task<IActionResult> Index()

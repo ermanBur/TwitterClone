@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using TwitterClone.Dto;
 using TwitterClone.Service;
 using TwitterCloneApplication.Models;
@@ -8,13 +9,14 @@ namespace TwitterClone.Controllers
 {
     public class PostController : Controller
     {
-        private readonly TwitterCloneContext _context;
         private readonly IPostService _postService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public PostController(TwitterCloneContext context, IPostService postService) 
+
+        public PostController(IPostService postService, IHttpContextAccessor httpContextAccessor)
         {
-            _context = context;
             _postService = postService;
+            _httpContextAccessor = httpContextAccessor;
         }
         [HttpGet]
         public async Task<ActionResult<List<PostDto>>> GetPostList()
@@ -25,48 +27,52 @@ namespace TwitterClone.Controllers
         }
         [HttpGet("{id}")]
         public ActionResult<Post> GetPost(int id)
-        {    
-            if(id != null) 
+        {
+            if (id != null)
             {
                 var post = _postService.GetPost(id);
             }
-            else 
+            else
             {
                 return NotFound();
             }
             return Ok();
         }
         [HttpDelete]
-        public async Task<ActionResult<PostDto>> DeletePostById(int id) 
-        { 
+        public async Task<ActionResult<PostDto>> DeletePostById(int id)
+        {
             await _postService.DeletePostById(id);
             return NoContent();
         }
         [HttpPost]
-        public async Task<ActionResult<CreatePostDto>> Create(CreatePostDto request, [FromServices] IPostService postService)
+        public async Task<IActionResult> Create(CreatePostDto createPostDto)
         {
-            //IHttpContextAccessor httpContextAccessor;
-            //var nameId = httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier);
-            //nameId.Value;
+            var userIdString = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!int.TryParse(userIdString, out int userId))
             {
-                var result = await _postService.CreatePost(request);
-                if(result != null)
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    return NotFound();
-                }
-
-                // GetPost async değilse ve doğrudan Post dönüyorsa:
-                //return GetPost(newPost.Id); // Eğer GetPost(int id) senkron çalışıyorsa
-
-                // GetPost async ise ve Task<ActionResult<Post>> dönüyorsa:
-                // Eğer GetPost(int id) asenkron çalışıyorsa
+                return BadRequest("User ID is invalid.");
             }
-            
+
+            var result = await _postService.CreatePost(createPostDto, userId);
+            if (result != null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                return NotFound();
+            }
+
+            // GetPost async değilse ve doğrudan Post dönüyorsa:
+            //return GetPost(newPost.Id); // Eğer GetPost(int id) senkron çalışıyorsa
+
+            // GetPost async ise ve Task<ActionResult<Post>> dönüyorsa:
+            // Eğer GetPost(int id) asenkron çalışıyorsa
         }
+
+
+
+
 
     }
 }

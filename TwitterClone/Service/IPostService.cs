@@ -9,6 +9,6 @@ namespace TwitterClone.Service
         Post GetPost(int id);
         Task DeletePostById(int id);
 
-        Task<PostDto> CreatePost(CreatePostDto request);
+        Task<PostDto> CreatePost(CreatePostDto request, int userId);
     }
 }
