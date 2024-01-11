@@ -29,6 +29,7 @@ builder.Services.AddLogging(loggingBuilder =>
 
 // UserService ve IUserService arasındaki bağımlılığı enjekte eder
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // Cookie bazlı kimlik doğrulama için gerekli yapılandırma
 builder.Services.AddAuthentication(options =>

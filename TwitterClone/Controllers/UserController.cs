@@ -103,11 +103,7 @@ namespace TwitterClone.Controllers
 
 
         // GET: User/Index
-        public async Task<IActionResult> Index()
-        {
-            var users = await _userService.GetAllUsersAsync();
-            return View(users);
-        }
+        
 
         /*// GET: User/Delete/5
         public IActionResult Delete(int? id)
