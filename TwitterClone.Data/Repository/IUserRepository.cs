@@ -1,4 +1,4 @@
-﻿using TwitterCloneApplication.Models;
+﻿using TwitterClone.Entity;
 
 public interface IUserRepository
 {

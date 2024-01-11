@@ -1,5 +1,5 @@
-﻿using TwitterCloneApplication.Models;
-
+﻿
+namespace TwitterClone.Entity;
 public class Follow
 {
     public int FollowerId { get; set; }

@@ -1,5 +1,8 @@
-﻿using TwitterCloneApplication.Models;
+﻿
 using Microsoft.EntityFrameworkCore;
+using TwitterClone.Entity;
+using TwitterClone.Dto;
+using TwitterClone.Contexts;
 
 namespace TwitterClone.Repository
 {
@@ -14,6 +17,34 @@ namespace TwitterClone.Repository
         {
             _context.Posts.Add(new Post { Id = id });
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<PostDto> Create(CreatePostDto request, int userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+                return null;
+
+            var newPost = new Post
+            {
+                Content = request.Content,
+                User = user,
+                PostedOn = DateTime.Now,
+            };
+
+            _context.Posts.Add(newPost);
+            await _context.SaveChangesAsync();
+
+
+            var postDto = new PostDto
+            {
+
+                Id = newPost.Id,
+                Content = newPost.Content,
+
+            };
+
+            return postDto;
         }
 
         public async Task DeletePostById(int id)

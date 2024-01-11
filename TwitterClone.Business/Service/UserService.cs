@@ -1,13 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TwitterCloneApplication.Models;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
+using TwitterClone.Entity;
+using TwitterClone.Contexts;
 
 public class UserService : IUserService
 {
+
     private readonly TwitterCloneContext _context;
 
     public UserService(TwitterCloneContext context)
@@ -84,7 +87,6 @@ public class UserService : IUserService
 
         return null; // Doğrulama başarısızsa veya kullanıcı bulunamazsa null döndür
     }
-
     public async Task<bool> ExistsUserAsync(string username, string email)
     {
         bool userExists = await _context.Users.AnyAsync(u => u.Username.ToLower() == username.ToLower() || u.Email.ToLower() == email.ToLower());

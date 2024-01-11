@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using TwitterCloneApplication.Models;
+using TwitterClone.Entity;
 
 public interface IUserService
 {

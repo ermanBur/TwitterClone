@@ -1,4 +1,7 @@
-﻿namespace TwitterClone.Repository
+﻿using TwitterClone.Dto;
+using TwitterClone.Entity;
+
+namespace TwitterClone.Repository
 {
     public interface IPostRepository
     {
@@ -6,5 +9,7 @@
         Task AddPostById(int id);
         Task<List<Post>> GetAllPostAsync();
         Post GetPostById(int id);
+
+        Task<PostDto> Create(CreatePostDto request, int userId);
     }
 }

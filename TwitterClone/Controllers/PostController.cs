@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using TwitterClone.Dto;
+using TwitterClone.Entity;
 using TwitterClone.Service;
 using TwitterCloneApplication.Models;
+
 
 namespace TwitterClone.Controllers
 {

@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TwitterCloneApplication.Models;
+
 using Microsoft.EntityFrameworkCore;
+using TwitterClone.Contexts;
+using TwitterClone.Entity;
 
 public class UserRepository : IUserRepository
 {

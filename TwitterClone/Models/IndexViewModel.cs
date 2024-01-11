@@ -1,4 +1,6 @@
-﻿namespace TwitterClone.Models
+﻿using TwitterClone.Entity;
+
+namespace TwitterClone.Models
 {
     public class IndexViewModel
     {

@@ -1,5 +1,7 @@
 ﻿using TwitterClone.Dto;
-using TwitterCloneApplication.Models;
+using TwitterClone.Entity;
+
+
 
 namespace TwitterClone.Service
 {

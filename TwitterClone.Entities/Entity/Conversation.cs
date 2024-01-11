@@ -1,4 +1,5 @@
-﻿public class Conversation
+﻿namespace TwitterClone.Entity;
+public class Conversation
 {
     public int Id { get; set; }
     public int UserOneId { get; set; }

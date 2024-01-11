@@ -1,47 +1,25 @@
 ﻿
 using TwitterClone.Dto;
+using TwitterClone.Entity;
 using TwitterClone.Repository;
-using TwitterCloneApplication.Models;
+
 
 namespace TwitterClone.Service
 {
     public class PostService : IPostService
     {
         private readonly IPostRepository _postRepository;
-        private readonly TwitterCloneContext _context;
+        
 
-        public PostService(IPostRepository postRepository, TwitterCloneContext context)
+        public PostService(IPostRepository postRepository)
         {
             _postRepository = postRepository;
-            _context = context;
+           
         }
 
         public async Task<PostDto> CreatePost(CreatePostDto request, int userId)
         {
-            var user = await _context.Users.FindAsync(userId);
-            if (user == null)
-                return null; 
-
-            var newPost = new Post
-            {
-                Content = request.Content,
-                User = user,
-                PostedOn = DateTime.Now,
-            };
-
-            _context.Posts.Add(newPost);
-            await _context.SaveChangesAsync();
-
-            
-            var postDto = new PostDto
-            {
-                
-                Id = newPost.Id,
-                Content = newPost.Content,
-                
-            };
-
-            return postDto;
+            return await _postRepository.Create(request, userId);
         }
     
 

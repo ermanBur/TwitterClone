@@ -1,4 +1,4 @@
-﻿using TwitterCloneApplication.Models;
+﻿namespace TwitterClone.Entity;
 
 public class Message
 {

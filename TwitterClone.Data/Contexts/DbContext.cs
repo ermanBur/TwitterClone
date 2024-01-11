@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using TwitterClone.Entity;
 
-namespace TwitterCloneApplication.Models
+namespace TwitterClone.Contexts
 {
     public class TwitterCloneContext : DbContext
     {
@@ -27,20 +28,20 @@ namespace TwitterCloneApplication.Models
         .HasKey(f => new { f.FollowerId, f.FollowingId });
 
             modelBuilder.Entity<Follow>()
-                .HasOne<User>(f => f.Follower) // Takip eden kullanıcı
+                .HasOne(f => f.Follower) // Takip eden kullanıcı
                 .WithMany() // Burada ilişkiyi yalnızca belirtiyoruz, koleksiyonu belirtmiyoruz
                 .HasForeignKey(f => f.FollowerId)
                 .OnDelete(DeleteBehavior.Restrict); // Kendi kendini takip etmesini önle
 
             modelBuilder.Entity<Follow>()
-                .HasOne<User>(f => f.Following) // Takip edilen kullanıcı
+                .HasOne(f => f.Following) // Takip edilen kullanıcı
                 .WithMany() // Burada ilişkiyi yalnızca belirtiyoruz, koleksiyonu belirtmiyoruz
                 .HasForeignKey(f => f.FollowingId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Bir kullanıcının birden çok post'u olabilir
             modelBuilder.Entity<Post>()
-                .HasOne<User>(p => p.User)
+                .HasOne(p => p.User)
                 .WithMany(u => u.Posts)
                 .HasForeignKey(p => p.UserId);
 
@@ -49,23 +50,23 @@ namespace TwitterCloneApplication.Models
                 .HasKey(l => new { l.UserId, l.PostId });
 
             modelBuilder.Entity<Like>()
-                .HasOne<Post>(l => l.Post)
+                .HasOne(l => l.Post)
                 .WithMany(p => p.Likes)
                 .HasForeignKey(l => l.PostId);
 
             modelBuilder.Entity<Like>()
-                .HasOne<User>(l => l.User)
+                .HasOne(l => l.User)
                 .WithMany(u => u.Likes)
                 .HasForeignKey(l => l.UserId);
 
             // Mesajlaşma
             modelBuilder.Entity<Message>()
-                .HasOne<User>(m => m.Sender)
+                .HasOne(m => m.Sender)
                 .WithMany(u => u.MessagesSent)
                 .HasForeignKey(m => m.SenderId);
 
             modelBuilder.Entity<Message>()
-                .HasOne<User>(m => m.Receiver)
+                .HasOne(m => m.Receiver)
                 .WithMany(u => u.MessagesReceived)
                 .HasForeignKey(m => m.ReceiverId);
 
@@ -86,15 +87,15 @@ namespace TwitterCloneApplication.Models
 
             // RePosts
             modelBuilder.Entity<RePost>()
-                .HasOne<User>(r => r.User)
+                .HasOne(r => r.User)
                 .WithMany(u => u.RePosts)
                 .HasForeignKey(r => r.UserId);
 
             modelBuilder.Entity<RePost>()
-                .HasOne<Post>(r => r.Post)
+                .HasOne(r => r.Post)
                 .WithMany(p => p.RePosts)
                 .HasForeignKey(r => r.PostId);
-            
+
             modelBuilder.Entity<Notification>()
                 .Property(n => n.Date)
                 .HasDefaultValueSql("GETDATE()");

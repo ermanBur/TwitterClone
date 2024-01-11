@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TwitterCloneApplication.Models;
+namespace TwitterClone.Entity;
 public class User
 {
     public int Id { get; set; }
@@ -16,7 +16,7 @@ public class User
     [Required(ErrorMessage = "Password is required.")]
     [DataType(DataType.Password)]
     //public string Password { get; set; }
-    public string PasswordHash { get; set; } 
+    public string PasswordHash { get; set; }
     public string Salt { get; set; }
 
 

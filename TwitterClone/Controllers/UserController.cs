@@ -7,7 +7,8 @@ using System;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Collections.Generic;
-using System.Security.Claims; // Claims için
+using System.Security.Claims;
+using TwitterClone.Entity; // Claims için
 
 namespace TwitterClone.Controllers
 {
@@ -82,11 +83,11 @@ namespace TwitterClone.Controllers
                 if (user != null)
                 {
                     var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Username),
-                // Diğer gerekli claimler burada eklenebilir
-            };
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                        new Claim(ClaimTypes.Name, user.Username),
+                        // Diğer gerekli claimler burada eklenebilir
+                    };
 
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 

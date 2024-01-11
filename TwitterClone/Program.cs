@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using TwitterCloneApplication.Models;
 using Microsoft.AspNetCore.Authentication.Cookies; // Cookie authentication için gerekli namespace
 using System.Security.Claims;
 using TwitterClone.Service;
-using TwitterClone.Repository; // Claims için gerekli namespace
+using TwitterClone.Repository;
+using TwitterClone.Contexts; // Claims için gerekli namespace
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +20,6 @@ builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 builder.Services.AddHttpContextAccessor();
-
 // Logging yapılandırması
 builder.Services.AddLogging(loggingBuilder =>
 {
