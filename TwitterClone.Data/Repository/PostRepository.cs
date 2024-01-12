@@ -68,5 +68,11 @@ namespace TwitterClone.Repository
         {
             return _context.Posts.Find(id); 
         }
+        public async Task<RePost> AddRePostAsync(RePost rePost)
+        {
+            await _context.RePosts.AddAsync(rePost);
+            await _context.SaveChangesAsync();
+            return rePost;
+        }
     }
 }

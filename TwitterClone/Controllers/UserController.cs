@@ -53,8 +53,7 @@ namespace TwitterClone.Controllers
                 try
                 {
                     await _userService.CreateUserAsync(user, model.Password);
-                    TempData["SuccessMessage"] = "User created successfully!";
-                    return RedirectToAction("Login", "User");
+                    return RedirectToAction("Login", "Home");
                 }
                 catch (Exception ex)
                 {
