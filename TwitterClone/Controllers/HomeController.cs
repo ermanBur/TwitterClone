@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using TwitterClone.Models;
 using TwitterClone.Service;
 
@@ -14,7 +13,6 @@ namespace TwitterClone.Controllers
             _postService = postService;
         }
 
-        [Authorize]
         public IActionResult Index()
         {
             var model = new IndexViewModel();
@@ -31,14 +29,8 @@ namespace TwitterClone.Controllers
 
         public IActionResult Login()
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
             return View(new LoginViewModel());
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
