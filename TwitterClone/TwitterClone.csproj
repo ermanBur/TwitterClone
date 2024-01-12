@@ -26,8 +26,4 @@
     <ProjectReference Include="..\TwitterClone.Entities\TwitterClone.Entities.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\NewFolder\" />
-  </ItemGroup>
-
 </Project>
