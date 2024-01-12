@@ -11,5 +11,7 @@ namespace TwitterClone.Repository
         Post GetPostById(int id);
 
         Task<PostDto> Create(CreatePostDto request, int userId);
+        Task<RePost> AddRePostAsync(RePost rePost);
+
     }
 }

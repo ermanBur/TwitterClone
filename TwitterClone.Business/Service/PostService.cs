@@ -39,7 +39,18 @@ namespace TwitterClone.Service
         {
             return _postRepository.GetAllPostAsync().Result;
         }
+        public async Task<RePost> RetweetPostAsync(int postId, int userId)
+        {
+            var rePost = new RePost
+            {
+                PostId = postId,
+                UserId = userId,
+                // Diğer gerekli alanlar...
+            };
 
-        
+            return await _postRepository.AddRePostAsync(rePost);
+        }
+
+
     }
 }

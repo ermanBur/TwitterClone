@@ -29,35 +29,39 @@
 
     </div>
     <!-- User Content -->
-    @if (Model != null)
+    @if (Model != null && Model.Posts.Any())
     {
         foreach (var post in Model.Posts)
         {
             <div class="tweets">
-                <div class="user-pics"><img src="~/img/user3.jpg" alt="user3"></div>
+                <!-- Kullanıcı resmi ve ismi -->
+                <div class="user-pics">
+                    <img src="~/img/user3.jpg" alt="user profile picture">
+                </div>
                 <div class="user-content-box">
                     <div class="user-names">
-                        <hi class="full-name">@post.User.Username</hi>
-                        <p class="user-name"></p>
-                        <p class="time">@post.PostedOn</p>
+                        <h1 class="full-name">@post.User.Username</h1>
+                        <p class="time">@post.PostedOn.ToString("g")</p>
                     </div>
-
                     <div class="user-content">
                         <p>@post.Content</p>
                     </div>
-
+                    <!-- Post altındaki ikonlar -->
                     <div class="content-icons">
-                        <i class="far fa-comment blue"> 109</i>
-                        <i class="fas fa-retweet green"> 865</i>
-                        <i class="far fa-heart red">1.6k</i>
-                        <i class="fas fa-chevron-up blue"></i>
+                        <!-- Retweet butonu ve sayacı -->
+                        <form action="@Url.Action("Retweet", "Post", new { postId = post.Id })" method="post">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="retweet-button">
+                                <i class="fas fa-retweet green"> @post.RePosts</i>
+                            </button>
+                        </form>
+                        <!-- Diğer ikonlar -->
                     </div>
-
                 </div>
             </div>
-
         }
     }
+
 
     <div class="pagnation">
         <a href="#">Load more</a>

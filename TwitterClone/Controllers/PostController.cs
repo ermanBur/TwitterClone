@@ -72,6 +72,23 @@ namespace TwitterClone.Controllers
             // Eğer GetPost(int id) asenkron çalışıyorsa
         }
 
+        [HttpPost("{postId}/retweet")]
+        public async Task<IActionResult> Retweet(int postId)
+        {
+            var userIdString = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!int.TryParse(userIdString, out int userId))
+            {
+                return BadRequest("User ID is invalid.");
+            }
+
+            var rePost = await _postService.RetweetPostAsync(postId, userId);
+
+            if (rePost != null)
+            {
+                return Ok(new { message = "Retweeted successfully!" });
+            }
+            return BadRequest(new { message = "Retweet failed." });
+        }
 
 
 
