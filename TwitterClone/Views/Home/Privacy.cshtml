@@ -63,29 +63,31 @@
         </div>
 
     </div>
-    <hr>
+    <hr style="margin-top:0px">
     @if(Model != null)
     {
         foreach(var post in Model.Posts)
         {
-            <div class="column-2-tweet">
-                <div class="tweet-avatar">
-                    <img src="~/images/elon.jpg" alt="Elon Musk">
-                </div>
-                <div class="tweet-content-container">
-                    <div class="tweet-user-details">
-                        <a href="#">@post.User.Username</a>
-                        <span>@post.PostedOn</span>
+            <div class="tweets">
+                <div class="user-pics"><img src="~/img/user3.jpg" alt="user3"></div>
+                <div class="user-content-box">
+                    <div class="user-names">
+                        <hi class="full-name">@post.User.Username</hi>
+                        <p class="user-name"></p>
+                        <p class="time">@post.PostedOn</p>
                     </div>
-                    <div class="tweet-content">
+
+                    <div class="user-content">
                         <p>@post.Content</p>
                     </div>
+
                     <div class="content-icons">
                         <i class="far fa-comment blue"> 109</i>
                         <i class="fas fa-retweet green"> 865</i>
                         <i class="far fa-heart red">1.6k</i>
                         <i class="fas fa-chevron-up blue"></i>
                     </div>
+
                 </div>
             </div>
         }
