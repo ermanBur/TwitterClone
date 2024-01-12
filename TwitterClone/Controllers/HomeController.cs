@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using TwitterClone.Models;
 using TwitterClone.Service;
 
@@ -22,12 +23,19 @@ namespace TwitterClone.Controllers
             return View(model);
         }
 
-        public IActionResult Privacy()
+        public async Task<IActionResult> Privacy()
         {
-            var model = new PrivacyViewModel();
-            model.Posts = _postService.GetPostList();
-            return View(model);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var postsDto = await _postService.GetPostsByUserIdAsync(int.Parse(userId));
+
+            var viewModel = new PrivacyViewModel
+            {
+                Posts = postsDto
+            };
+
+            return View(viewModel);
         }
+
 
         public IActionResult Login()
         {

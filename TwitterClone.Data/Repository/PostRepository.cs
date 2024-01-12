@@ -68,6 +68,29 @@ namespace TwitterClone.Repository
         {
             return _context.Posts.Find(id); 
         }
+
+        public async Task<List<PostDto>> GetPostsByUserIdAsync(int userId)
+        {
+            var posts = await _context.Posts
+                                      .Where(p => p.UserId == userId)
+                                      .Select(post => new PostDto
+                                      {
+                                          Id = post.Id,
+                                          Content = post.Content,
+                                          PostedOn = post.PostedOn,
+                                          User = new UserDto
+                                          {
+                                              Id = post.User.Id,
+                                              Username = post.User.Username
+                                          }
+                                      }).ToListAsync();
+
+            return posts;
+        }
+
+
+
+
         public async Task<RePost> AddRePostAsync(RePost rePost)
         {
             await _context.RePosts.AddAsync(rePost);
