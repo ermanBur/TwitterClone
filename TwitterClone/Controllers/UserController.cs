@@ -69,6 +69,7 @@ namespace TwitterClone.Controllers
         // GET: User/Login
         public IActionResult Login()
         {
+            
             return View("~/Views/Home/Login.cshtml", new LoginViewModel());
         }
 
