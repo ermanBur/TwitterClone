@@ -2,28 +2,30 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TwitterClone.Contexts;
 
-
 #nullable disable
 
-namespace TwitterClone.Migrations
+namespace TwitterClone.Data.Migrations
 {
     [DbContext(typeof(TwitterCloneContext))]
-    partial class TwitterCloneContextModelSnapshot : ModelSnapshot
+    [Migration("20240114170302_allahicin")]
+    partial class allahicin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Conversation", b =>
+            modelBuilder.Entity("TwitterClone.Entity.Conversation", b =>
                 {
                     b.Property<int>("UserOneId")
                         .HasColumnType("integer");
@@ -39,7 +41,7 @@ namespace TwitterClone.Migrations
                     b.ToTable("Conversations");
                 });
 
-            modelBuilder.Entity("Follow", b =>
+            modelBuilder.Entity("TwitterClone.Entity.Follow", b =>
                 {
                     b.Property<int>("FollowerId")
                         .HasColumnType("integer");
@@ -54,7 +56,7 @@ namespace TwitterClone.Migrations
                     b.ToTable("Follows");
                 });
 
-            modelBuilder.Entity("Like", b =>
+            modelBuilder.Entity("TwitterClone.Entity.Like", b =>
                 {
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
@@ -69,7 +71,7 @@ namespace TwitterClone.Migrations
                     b.ToTable("Likes");
                 });
 
-            modelBuilder.Entity("Media", b =>
+            modelBuilder.Entity("TwitterClone.Entity.Media", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -88,7 +90,7 @@ namespace TwitterClone.Migrations
                     b.ToTable("Medias");
                 });
 
-            modelBuilder.Entity("Message", b =>
+            modelBuilder.Entity("TwitterClone.Entity.Message", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -115,29 +117,7 @@ namespace TwitterClone.Migrations
                     b.ToTable("Messages");
                 });
 
-            modelBuilder.Entity("Notification", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Date")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Notifications");
-                });
-
-            modelBuilder.Entity("Post", b =>
+            modelBuilder.Entity("TwitterClone.Entity.Post", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -150,7 +130,7 @@ namespace TwitterClone.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("PostedOn")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
@@ -162,7 +142,7 @@ namespace TwitterClone.Migrations
                     b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("RePost", b =>
+            modelBuilder.Entity("TwitterClone.Entity.RePost", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -185,7 +165,7 @@ namespace TwitterClone.Migrations
                     b.ToTable("RePosts");
                 });
 
-            modelBuilder.Entity("TwitterCloneApplication.Models.User", b =>
+            modelBuilder.Entity("TwitterClone.Entity.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -197,6 +177,9 @@ namespace TwitterClone.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
+
+                    b.Property<DateTime>("JoinDate")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
@@ -216,15 +199,15 @@ namespace TwitterClone.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Follow", b =>
+            modelBuilder.Entity("TwitterClone.Entity.Follow", b =>
                 {
-                    b.HasOne("TwitterCloneApplication.Models.User", "Follower")
+                    b.HasOne("TwitterClone.Entity.User", "Follower")
                         .WithMany()
                         .HasForeignKey("FollowerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TwitterCloneApplication.Models.User", "Following")
+                    b.HasOne("TwitterClone.Entity.User", "Following")
                         .WithMany()
                         .HasForeignKey("FollowingId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -235,15 +218,15 @@ namespace TwitterClone.Migrations
                     b.Navigation("Following");
                 });
 
-            modelBuilder.Entity("Like", b =>
+            modelBuilder.Entity("TwitterClone.Entity.Like", b =>
                 {
-                    b.HasOne("Post", "Post")
+                    b.HasOne("TwitterClone.Entity.Post", "Post")
                         .WithMany("Likes")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TwitterCloneApplication.Models.User", "User")
+                    b.HasOne("TwitterClone.Entity.User", "User")
                         .WithMany("Likes")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -254,15 +237,15 @@ namespace TwitterClone.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Message", b =>
+            modelBuilder.Entity("TwitterClone.Entity.Message", b =>
                 {
-                    b.HasOne("TwitterCloneApplication.Models.User", "Receiver")
+                    b.HasOne("TwitterClone.Entity.User", "Receiver")
                         .WithMany("MessagesReceived")
                         .HasForeignKey("ReceiverId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TwitterCloneApplication.Models.User", "Sender")
+                    b.HasOne("TwitterClone.Entity.User", "Sender")
                         .WithMany("MessagesSent")
                         .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -273,9 +256,9 @@ namespace TwitterClone.Migrations
                     b.Navigation("Sender");
                 });
 
-            modelBuilder.Entity("Post", b =>
+            modelBuilder.Entity("TwitterClone.Entity.Post", b =>
                 {
-                    b.HasOne("TwitterCloneApplication.Models.User", "User")
+                    b.HasOne("TwitterClone.Entity.User", "User")
                         .WithMany("Posts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -284,15 +267,15 @@ namespace TwitterClone.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("RePost", b =>
+            modelBuilder.Entity("TwitterClone.Entity.RePost", b =>
                 {
-                    b.HasOne("Post", "Post")
+                    b.HasOne("TwitterClone.Entity.Post", "Post")
                         .WithMany("RePosts")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TwitterCloneApplication.Models.User", "User")
+                    b.HasOne("TwitterClone.Entity.User", "User")
                         .WithMany("RePosts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -303,14 +286,14 @@ namespace TwitterClone.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Post", b =>
+            modelBuilder.Entity("TwitterClone.Entity.Post", b =>
                 {
                     b.Navigation("Likes");
 
                     b.Navigation("RePosts");
                 });
 
-            modelBuilder.Entity("TwitterCloneApplication.Models.User", b =>
+            modelBuilder.Entity("TwitterClone.Entity.User", b =>
                 {
                     b.Navigation("Likes");
 

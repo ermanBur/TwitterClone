@@ -8,6 +8,8 @@ public interface IUserRepository
     Task CreateUserAsync(User user, string password);
     Task<User> ValidateUserAsync(string username, string password);
     Task<bool> ExistsUserAsync(string username, string email);
+    Task<UserInformationDto> GetUserInformationAsync(int userId);
+
 
     // Diğer gerekli metodlar...
 }

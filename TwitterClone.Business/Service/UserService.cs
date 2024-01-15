@@ -47,6 +47,10 @@ public class UserService : IUserService
     {
         return _userRepository.ExistsUserAsync(username, email);
     }
+    public async Task<UserInformationDto> GetUserInformationAsync(int userId)
+    {
+        return await _userRepository.GetUserInformationAsync(userId);
+    }
 
     //Şimdilik çalışmıyor sonrasında düzenlenme yapılarak _context kısmı ile kaldırılıp repo tanımlanacak
     public async Task DeleteUserAsync(int userId)

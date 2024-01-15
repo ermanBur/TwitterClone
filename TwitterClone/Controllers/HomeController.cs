@@ -9,10 +9,14 @@ namespace TwitterClone.Controllers
     public class HomeController : Controller
     {
         private readonly IPostService _postService;
+        private readonly IUserService _userService;
 
-        public HomeController(IPostService postService)
+
+        public HomeController(IPostService postService, IUserService userService)
         {
             _postService = postService;
+            _userService = userService;
+
         }
 
         [Authorize]
@@ -26,15 +30,19 @@ namespace TwitterClone.Controllers
         public async Task<IActionResult> Privacy()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userInformationDto = await _userService.GetUserInformationAsync(int.Parse(userId));
             var postsDto = await _postService.GetPostsByUserIdAsync(int.Parse(userId));
 
             var viewModel = new PrivacyViewModel
             {
-                Posts = postsDto
+                Posts = postsDto,
+                User = userInformationDto // PrivacyViewModel'de User özelliğini ekleyin
             };
 
             return View(viewModel);
         }
+
+
 
 
         public IActionResult Login()

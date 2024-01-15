@@ -17,7 +17,7 @@ namespace TwitterClone.Contexts
         public DbSet<Like> Likes { get; set; }
         public DbSet<Media> Medias { get; set; }
         public DbSet<Message> Messages { get; set; }
-        public DbSet<Notification> Notifications { get; set; }
+        //public DbSet<Notification> Notifications { get; set; }
         public DbSet<Conversation> Conversations { get; set; }
         public DbSet<RePost> RePosts { get; set; }
 
@@ -76,9 +76,9 @@ namespace TwitterClone.Contexts
                 .ValueGeneratedOnAdd();
 
             // Notification
-            modelBuilder.Entity<Notification>()
-                .Property(n => n.Date)
-                .HasDefaultValueSql("CURRENT_TIMESTAMP");
+            //modelBuilder.Entity<Notification>()
+              //  .Property(n => n.Date)
+                //.HasDefaultValueSql("CURRENT_TIMESTAMP");
 
 
             // Conversations
@@ -96,9 +96,9 @@ namespace TwitterClone.Contexts
                 .WithMany(p => p.RePosts)
                 .HasForeignKey(r => r.PostId);
 
-            modelBuilder.Entity<Notification>()
-                .Property(n => n.Date)
-                .HasDefaultValueSql("GETDATE()");
+           // modelBuilder.Entity<Notification>()
+             //   .Property(n => n.Date)
+               // .HasDefaultValueSql("GETDATE()");
         }
     }
 }

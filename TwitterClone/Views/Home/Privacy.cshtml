@@ -8,8 +8,8 @@
             <i style='font-size:24px' class='fas'>&#xf060;</i>
         </div>
         <div class="column-2-head-user">
-            <h2>David Herbert</h2>
-            <P>225 Tweets</P>
+            <h2>@Model.User.Username</h2>
+            <P>@Model.User.PostCount Tweets</P>
         </div>
     </div>
     <div class="column-2-banner">
@@ -18,7 +18,7 @@
     <div class="column-2-user-tab">
         <div class="user-tab-1">
             <div class="user-tab-1-img">
-                <img src="~/img/yeniuye.png" alt="My picture">
+                <img src="~/img/yeniuye.png" alt="@Model.User.Username's picture">
             </div>
             <div class="user-tab-1-cta">
                 <div class="cta-4">
@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="user-tab-2">
-            <h2>David Herbert</h2>
+            <h2>@Model.User.Username</h2>
 
         </div>
         <div class="user-tab-3">
@@ -38,11 +38,11 @@
             </div>
             <div class="tab-3-second tab-3-item">
                 <span> <i style='font-size:24px' class='fab'>&#xf167;</i>  </span>
-                <p>David Herbert</p>
+                <p>@Model.User.Username</p>
             </div>
             <div class="tab-3-third tab-3-item">
                 <span> <i style='font-size:24px' class='far'>&#xf073;</i> </span>
-                <p>Joined August 2022</p>
+                <p>Joined @Model.User.JoinedDate.ToString("MMMM yyyy")</p>
             </div>
         </div>
         <div class="user-tab-4">
