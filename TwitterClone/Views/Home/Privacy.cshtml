@@ -2,6 +2,18 @@
 @using TwitterClone.Entity;
 <link rel="stylesheet" href="~/css/main.css">
 
+<style>
+    .edit-btn,
+    .delete-btn {
+        border-radius: 8px;
+        background-color: #1da1f2;
+        color:white;
+        border: 0px solid #3498db; /* Kenar çizgisi rengi */
+    }
+
+</style>
+
+
 <div class="twitter-column-2">
     <div class="column-2-header">
         <div class="column-2-head-icon">
@@ -13,7 +25,7 @@
         </div>
     </div>
     <div class="column-2-banner">
-      <img  src="~/img/kapakfoto.jpg" alt="profile pics" style="width:100%;">
+        <img src="~/img/kapakfoto.jpg" alt="profile pics" style="width:100%;">
     </div>
     <div class="column-2-user-tab">
         <div class="user-tab-1">
@@ -28,7 +40,6 @@
         </div>
         <div class="user-tab-2">
             <h2>David Herbert</h2>
-
         </div>
         <div class="user-tab-3">
             <div class="tab-3-first tab-3-item">
@@ -37,7 +48,7 @@
                 <span><iconify-icon class="tab-3-item-icon" icon="material-symbols:info-outline-rounded"></iconify-icon></span>
             </div>
             <div class="tab-3-second tab-3-item">
-                <span> <i style='font-size:24px' class='fab'>&#xf167;</i>  </span>
+                <span> <i style='font-size:24px' class='fab'>&#xf167;</i> </span>
                 <p>David Herbert</p>
             </div>
             <div class="tab-3-third tab-3-item">
@@ -56,17 +67,15 @@
             </a>
         </div>
         <div class="user-tab-5">
-            <a class="tab-5-nav" href="#">Tweets</a>
-            <a class="tab-5-nav" href="#">Tweets & Replies</a>
-            <a class="tab-5-nav" href="#">Media</a>
-            <a class="tab-5-nav" href="#">Likes</a>
+            <a class="tab-5-nav" href="#">Post</a>
+            <a class="tab-5-nav" href="#">Persons</a>
         </div>
-
     </div>
     <hr style="margin-top:0px">
-    @if(Model != null)
+
+    @if (Model != null)
     {
-        foreach(var post in Model.Posts)
+        foreach (var post in Model.Posts)
         {
             <div class="tweets">
                 <div class="user-pics"><img src="~/img/yeniuye.png" alt="user3"></div>
@@ -75,6 +84,11 @@
                         <hi class="full-name">@post.User.Username</hi>
                         <p class="user-name"></p>
                         <p class="time">@post.PostedOn</p>
+                        <!-- Açılır/Kapanır Alan -->
+                        <div class="toggle-section-content" style="display: none; background-color: white; padding: 6px; margin-left:87px">
+                            <button class="edit-btn">Edit</button>
+                            <button class="delete-btn">Delete</button>
+                        </div>
                     </div>
 
                     <div class="user-content">
@@ -85,14 +99,41 @@
                         <i class="far fa-comment blue"> 109</i>
                         <i class="fas fa-retweet green"> 865</i>
                         <i class="far fa-heart red">1.6k</i>
-                        <i class="fas fa-chevron-up blue"></i>
+                        <i class="fas fa-chevron-up blue toggle-section"></i>
+                
                     </div>
+
+
 
                 </div>
             </div>
         }
     }
-    
+
     <hr>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Ikonlara tıklanınca içeriği aç/kapat
+        $(".toggle-section").click(function () {
+            // Tıklanan ikonun parent'ının içindeki açılır/kapanır alanı bul ve aç/kapat
+            var contentContainer = $(this).closest('.tweets');
+            contentContainer.find(".toggle-section-content").slideToggle();
+        });
+
+        // Düzenle butonuna tıklanınca
+        $(".edit-btn").click(function () {
+            // Düzenleme işlemini burada gerçekleştirin
+            alert("Düzenle butonuna tıklandı!");
+        });
+
+        // Sil butonuna tıklanınca
+        $(".delete-btn").click(function () {
+            // Silme işlemini burada gerçekleştirin
+            alert("Sil butonuna tıklandı!");
+        });
+    });
+</script>

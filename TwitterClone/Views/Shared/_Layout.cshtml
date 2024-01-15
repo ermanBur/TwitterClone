@@ -9,6 +9,59 @@
     <link rel="stylesheet" href="~/TwitterClone.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/style.css">
     <link rel="stylesheet" href="~/css/all.css">
+    @* <script src="~/js/site.js"></script> *@
+    <script src="" defer></script>
+
+    <style>
+        .profile-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background-color: #f2f2f2;
+        }
+
+            .profile-box img {
+                max-width: 50px;
+                max-height: 50px;
+                border-radius: 50%;
+            }
+
+        .profile-link {
+            flex-grow: 1;
+        }
+
+        .options-icon {
+            cursor: pointer;
+        }
+
+        .options-menu {
+            display: none;
+            position: absolute;
+            top: 630px;
+            left:50px ;
+            background-color: #1da1f2;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            /* border: 1px solid #000; */
+            width:200px;
+            padding: 5px;
+            z-index: 1;
+            min-width: 100px;
+            border-radius:25px;
+            text-align: center;
+        }
+
+            .options-menu p {
+                margin: 0;
+                padding: 8px;
+                cursor: pointer;
+                color: white;
+            }
+
+        .profile-box:hover .options-menu {
+            display: block;
+        }
+    </style>
 </head>
 <body>
 
@@ -53,14 +106,20 @@
                 </ul>
             </div>
             <div class="tweet"><a href="#">Tweet</a></div>
+
             <div class="profile-box">
                 <img src="~/img/yeniuye.png" alt="profile">
                 <div class="profile-link">
                     <p class="full-name">David Herbert</p>
                     <p class="user-name"></p>
                 </div>
-                <div class="options-icon"><i class="fas fa-caret-down"></i></div>
+                <div class="options-icon" id="options-icon"><i class="fas fa-caret-down"></i></div>
+                <div class="options-menu" id="options-menu">
+                    <!-- Açılır kapanır pencerenin içeriği buraya eklenebilir -->
+                    <p class="menu-item" onclick="exit()">Exit</p>
+                </div>
             </div>
+
         </div>
 
         @RenderBody()
@@ -154,5 +213,33 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var optionsIcon = document.getElementById('options-icon');
+            var optionsMenu = document.getElementById('options-menu');
+
+            optionsMenu.style.display = 'none'; // Başlangıçta optionsMenu'yu gizle
+
+            optionsIcon.addEventListener('click', function (event) {
+                event.stopPropagation();
+                optionsMenu.style.display = (optionsMenu.style.display === 'none' || optionsMenu.style.display === '') ? 'block' : 'none';
+            });
+
+            document.addEventListener('click', function (event) {
+                if (!optionsIcon.contains(event.target)) {
+                    optionsMenu.style.display = 'none';
+                }
+            });
+        });
+
+        function exit() {
+            // Belirtilen URL'ye yönlendirme işlemi
+            window.location.href = 'http://localhost:5109/User/Login?ReturnUrl=%2FHome%2FIndex';
+        }
+
+
+    </script>
+
 </body>
 </html>
