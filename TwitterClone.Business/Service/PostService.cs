@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
 using TwitterClone.Dto;
 using TwitterClone.Entity;
 using TwitterClone.Repository;
@@ -51,6 +52,10 @@ namespace TwitterClone.Service
             return await _postRepository.AddRePostAsync(rePost);
         }
 
+        public async Task<List<PostDto>> GetPostsByUserIdAsync(int userId)
+        {
+            return await _postRepository.GetPostsByUserIdAsync(userId);
+        }
 
     }
 }

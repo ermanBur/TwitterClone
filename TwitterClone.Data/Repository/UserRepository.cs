@@ -83,10 +83,27 @@ public class UserRepository : IUserRepository
 
             if (hashed == user.PasswordHash)
             {
-                return user; // Kullanıcı bilgileriyle birlikte kullanıcı nesnesini döndür
+                return user; 
             }
         }
 
-        return null; // Doğrulama başarısızsa veya kullanıcı bulunamazsa null döndür
+        return null; 
+    }
+    public async Task<UserInformationDto> GetUserInformationAsync(int userId)
+    {
+        var user = await _context.Users
+                                 .Where(u => u.Id == userId)
+                                 .Select(u => new UserInformationDto
+                                 {
+                                     Username = u.Username,
+                                     Email = u.Email,
+                                     PostCount = u.Posts.Count,
+                                     LikesCount = u.Likes.Count,
+                                     MessagesCount = u.MessagesSent.Count + u.MessagesReceived.Count,
+                                     JoinedDate = u.JoinDate
+
+                                 }).FirstOrDefaultAsync();
+
+        return user;
     }
 }

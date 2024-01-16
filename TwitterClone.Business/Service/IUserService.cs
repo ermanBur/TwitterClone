@@ -12,6 +12,8 @@ public interface IUserService
     //Task CreateUserAsync(User user);
     Task<User> ValidateUserAsync(string username, string password);
     Task DeleteUserAsync(int userId);
+    Task<UserInformationDto> GetUserInformationAsync(int userId);
+
 
 
     // Diğer gerekli metodlar...
