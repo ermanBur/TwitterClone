@@ -8,28 +8,29 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Collections.Generic;
 using System.Security.Claims;
-using TwitterClone.Entity; // Claims için
+using TwitterClone.Entity;
+using TwitterClone.Service;
 
 namespace TwitterClone.Controllers
 {
     public class UserController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IPostService _postService;
         private readonly ILogger<UserController> _logger;
 
-        public UserController(IUserService userService, ILogger<UserController> logger)
+        public UserController(IUserService userService, ILogger<UserController> logger, IPostService postService)
         {
             _userService = userService;
             _logger = logger;
+            _postService = postService;
         }
 
-        // GET: User/Register
         public IActionResult Register()
         {
             return View(new RegisterViewModel());
         }
 
-        // POST: User/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
@@ -47,7 +48,6 @@ namespace TwitterClone.Controllers
                 {
                     Username = model.Username,
                     Email = model.Email,
-                    // Şifre ve diğer gerekli alanlar burada oluşturulmalıdır
                 };
 
                 try
@@ -65,13 +65,11 @@ namespace TwitterClone.Controllers
         }
 
 
-        // GET: User/Login
         public IActionResult Login()
         {            
             return View("~/Views/Home/Login.cshtml", new LoginViewModel());
         }
 
-        // POST: User/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
@@ -85,7 +83,6 @@ namespace TwitterClone.Controllers
                     {
                         new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                         new Claim(ClaimTypes.Name, user.Username),
-                        // Diğer gerekli claimler burada eklenebilir
                     };
 
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -98,11 +95,30 @@ namespace TwitterClone.Controllers
             }
             return View("~/Views/Home/Login.cshtml", model);
         }
+        public async Task<IActionResult> Profile(string username)
+        {
+            var userInformation = await _userService.GetUserInformationByUsernameAsync(username);
+            if (userInformation == null)
+            {
+                return NotFound();
+            }
+
+            var posts = await _postService.GetPostsByUserIdAsync(userInformation.Id);
+
+            var viewModel = new PrivacyViewModel
+            {
+                User = userInformation,
+                Posts = posts
+            };
+
+            return View("~/Views/Home/Privacy.cshtml", viewModel);
+        }
+
 
 
 
         // GET: User/Index
-        
+
 
         /*// GET: User/Delete/5
         public IActionResult Delete(int? id)

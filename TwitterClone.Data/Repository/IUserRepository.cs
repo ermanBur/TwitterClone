@@ -9,7 +9,8 @@ public interface IUserRepository
     Task<User> ValidateUserAsync(string username, string password);
     Task<bool> ExistsUserAsync(string username, string email);
     Task<UserInformationDto> GetUserInformationAsync(int userId);
+    Task<User> GetByUsernameAsync(string username);
 
 
-    // Diğer gerekli metodlar...
+
 }

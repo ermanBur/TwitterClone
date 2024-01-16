@@ -58,9 +58,6 @@ public class UserRepository : IUserRepository
 
     public async Task<IEnumerable<User>> GetFollowingsAsync(int userId)
     {
-        // Takip edilenleri almak için SQL sorgusu veya LINQ sorgusu yazınız.
-        // Örnek:
-        // return await _context.Followings.Where(f => f.FollowerId == userId).Select(f => f.User).ToListAsync();
         return await _context.Follows
                              .Where(f => f.FollowerId == userId)
                              .Select(f => f.Following)
@@ -106,4 +103,11 @@ public class UserRepository : IUserRepository
 
         return user;
     }
+    public async Task<User> GetByUsernameAsync(string username)
+    {
+        return await _context.Users
+                             .AsNoTracking()
+                             .FirstOrDefaultAsync(u => EF.Functions.Like(u.Username, username));
+    }
+
 }

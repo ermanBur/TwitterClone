@@ -37,7 +37,10 @@
                 <div class="user-pics"><img src="~/img/yeniuye.png" alt="user3"></div>
                 <div class="user-content-box">
                     <div class="user-names">
-                        <h1 class="full-name">@post.User.Username</h1>
+                        <!-- Kullanıcı adına tıklanınca Profile yönlendir -->
+                        <h1 class="full-name">
+                            <a asp-controller="User" asp-action="Profile" asp-route-username="@post.User.Username">@post.User.Username</a>
+                        </h1>
                         <p class="time">@post.PostedOn.ToString("g")</p>
                     </div>
                     <div class="user-content">
