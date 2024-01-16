@@ -55,7 +55,7 @@ label.btn {
 
 .account-settings-fileinput {
     position: absolute;
-    visibility: hidden;
+  //  visibility: hidden;
     width: 1px;
     height: 1px;
     opacity: 0;

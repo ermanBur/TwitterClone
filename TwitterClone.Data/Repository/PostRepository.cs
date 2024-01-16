@@ -61,7 +61,6 @@ namespace TwitterClone.Repository
         {
             var tweets = _context.Posts.Include(c =>c.User).OrderByDescending(t => t.PostedOn).ToList();
             return tweets;
-            //return await _context.Posts.Include(c => c.User).ToListAsync();
         }
 
         public Post GetPostById(int id)
@@ -73,16 +72,14 @@ namespace TwitterClone.Repository
         {
             var posts = await _context.Posts
                                       .Where(p => p.UserId == userId)
+                                      .Include(p => p.User)
+                                      .OrderByDescending(p => p.PostedOn)
                                       .Select(post => new PostDto
                                       {
                                           Id = post.Id,
                                           Content = post.Content,
                                           PostedOn = post.PostedOn,
-                                          User = new UserDto
-                                          {
-                                              Id = post.User.Id,
-                                              Username = post.User.Username
-                                          }
+                                          Username = post.User.Username,
                                       }).ToListAsync();
 
             return posts;

@@ -1,22 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
 using TwitterClone.Entity;
 using TwitterClone.Contexts;
+using TwitterClone.Repository;
 
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
     private readonly TwitterCloneContext _context;
+    private readonly IPostRepository _postRepository;
 
-    public UserService(TwitterCloneContext context, IUserRepository userRepository)
+    public UserService(TwitterCloneContext context, IUserRepository userRepository, IPostRepository postRepository)
     {
         _context = context;
         _userRepository = userRepository;
+        _postRepository = postRepository;
     }
 
     public async Task<User> GetUserAsync(int userId)
@@ -61,6 +63,37 @@ public class UserService : IUserService
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
         }
+    }
+    public async Task<UserInformationDto> GetUserInformationByUsernameAsync(string username)
+    {
+        var user = await _userRepository.GetByUsernameAsync(username);
+        if (user == null)
+        {
+            return null;
+        }
+
+        var posts = await _postRepository.GetPostsByUserIdAsync(user.Id);
+
+        var userInformationDto = new UserInformationDto
+        {
+            Id = user.Id,
+            Username = user.Username,
+            Email = user.Email,
+            PostCount = posts.Count,
+            LikesCount = user.Likes.Count,
+            MessagesCount = user.MessagesSent.Count + user.MessagesReceived.Count,
+            JoinedDate = user.JoinDate,
+            Posts = posts.Select(post => new PostDto
+            {
+                Id = post.Id,
+                Username = user.Username,
+                Content = post.Content,
+                PostedOn = post.PostedOn
+            }).ToList()
+        };
+
+        return userInformationDto;
+
     }
 
 
