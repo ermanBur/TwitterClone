@@ -83,6 +83,11 @@
                     <div class="user-names">
                         <h1 class="full-name">@Model.User.Username</h1>
                         <p class="time">@post.PostedOn.ToString("g")</p>
+                        <!-- Açılır/Kapanır Alan -->
+                        <div class="toggle-section-content" style="display: none; background-color: white; padding: 6px; margin-left:87px">
+                            <button class="edit-btn">Edit</button>
+                            <button class="delete-btn">Delete</button>
+                        </div>
                     </div>
 
                     <div class="user-content">
