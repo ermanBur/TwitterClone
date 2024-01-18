@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using TwitterClone.Entity;
 using TwitterClone.Contexts;
 using TwitterClone.Repository;
+using TwitterClone.Dto;
 
 public class UserService : IUserService
 {
@@ -96,5 +97,19 @@ public class UserService : IUserService
 
     }
 
-
+    public IEnumerable<UserInformationDto> SearchUsers(string searchQuery)
+    {
+            var users = _userRepository.SearchByQuery(searchQuery);
+            var result = new List<UserInformationDto>();
+            foreach (var user in users)
+            {
+                result.Add(new UserInformationDto
+                {
+                    Id = user.Id,
+                    Username = user.Username
+                });
+            }
+            return result;
+        
+    }
 }

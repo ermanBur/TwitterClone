@@ -14,6 +14,7 @@ namespace TwitterClone.Service
         Task<PostDto> CreatePost(CreatePostDto request, int userId);
         Task<RePost> RetweetPostAsync(int postId, int userId);
         Task<List<PostDto>> GetPostsByUserIdAsync(int userId);
+        Task<IEnumerable<Post>> SearchPostsByContentAsync(string searchQuery);
 
 
     }

@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.EntityFrameworkCore;
 using TwitterClone.Contexts;
 using TwitterClone.Entity;
+using TwitterClone.Dto;
 
 public class UserRepository : IUserRepository
 {
@@ -110,4 +112,11 @@ public class UserRepository : IUserRepository
                              .FirstOrDefaultAsync(u => EF.Functions.Like(u.Username, username));
     }
 
+    public IEnumerable<User> SearchByQuery(string searchQuery)
+    {
+        {
+            return _context.Users.Where(u => u.Username.Contains(searchQuery))
+                .AsEnumerable();
+        }
+    }
 }

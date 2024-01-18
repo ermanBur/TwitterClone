@@ -1,4 +1,5 @@
 ﻿using TwitterClone.Entity;
+using TwitterClone.Dto;
 
 public interface IUserRepository
 {
@@ -10,7 +11,6 @@ public interface IUserRepository
     Task<bool> ExistsUserAsync(string username, string email);
     Task<UserInformationDto> GetUserInformationAsync(int userId);
     Task<User> GetByUsernameAsync(string username);
-
-
+    IEnumerable<User> SearchByQuery(string searchQuery);
 
 }

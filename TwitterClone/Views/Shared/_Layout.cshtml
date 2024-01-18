@@ -126,9 +126,13 @@
 
         <div class="right-flex-container flex-item">
             <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Search Twitter">
+                <form method="post" action="/Search/Index">
+                    <i class="fas fa-search"></i>
+                    <input type="text" name="searchQuery" placeholder="Search Twitter">
+                    <button type="submit">Search</button>
+                </form>
             </div>
+
 
             <div class="trends">
                 <ul>

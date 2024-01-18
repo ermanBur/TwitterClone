@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitterClone.Entity;
+using TwitterClone.Dto;
 
 public interface IUserService
 {
@@ -13,6 +14,7 @@ public interface IUserService
     Task DeleteUserAsync(int userId);
     Task<UserInformationDto> GetUserInformationAsync(int userId);
     Task<UserInformationDto> GetUserInformationByUsernameAsync(string username);
+    IEnumerable<UserInformationDto> SearchUsers(string searchTerm);
 
 
 

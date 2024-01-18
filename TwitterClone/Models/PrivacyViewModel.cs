@@ -1,4 +1,5 @@
 ﻿using TwitterClone.Entity;
+using TwitterClone.Dto;
 
 namespace TwitterClone.Models
 {

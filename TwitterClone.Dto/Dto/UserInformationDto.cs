@@ -1,4 +1,5 @@
-﻿public class UserInformationDto
+﻿namespace TwitterClone.Dto;
+public class UserInformationDto
 {
     public int Id { get; set; }
     public string Username { get; set; }

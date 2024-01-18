@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using TwitterClone.Dto;
 using TwitterClone.Entity;
 using TwitterClone.Repository;
@@ -55,6 +56,17 @@ namespace TwitterClone.Service
         public async Task<List<PostDto>> GetPostsByUserIdAsync(int userId)
         {
             return await _postRepository.GetPostsByUserIdAsync(userId);
+        }
+
+        public async Task<IEnumerable<Post>> SearchPostsByContentAsync(string searchQuery)
+        {
+            var posts = await _postRepository.SearchPostsByContentAsync(searchQuery);
+            var result = posts.Select(post => new PostDto
+            {
+                Id = post.Id,
+                Content = post.Content,
+            });
+            return posts;
         }
 
     }

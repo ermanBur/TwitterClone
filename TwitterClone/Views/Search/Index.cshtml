@@ -1,0 +1,38 @@
+﻿@using System.Web
+@using TwitterClone.Entity;
+@model TwitterClone.Models.SearchModel
+
+
+<div class="container">
+    <h2>Arama Sonuçları</h2>
+    @if (Model.SearchResults.Any())
+    {
+        <ul>
+            @foreach (var user in Model.SearchResults)
+            {
+                <li>
+                    <a href="@Url.Action("Profile","User", new{username =user.Username})">@user.Username</a>
+                    
+                </li>
+            }
+        </ul>
+
+    }
+    else if (Model.PostSearch.Any())
+    {
+        <ul>
+            @foreach (var post in Model.PostSearch)
+            {
+                <li>
+
+                    <p>@post.Content</p>
+
+                </li>
+            }
+        </ul>
+    }
+    else 
+    {
+        <p>Arama sonucu bulunamadı.</p>
+    }
+</div>
