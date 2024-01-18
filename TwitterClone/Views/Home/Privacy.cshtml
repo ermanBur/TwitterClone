@@ -102,6 +102,35 @@
                 </div>
             </div>
         }
+    }@if (Model != null && Model.Posts != null)
+    {
+        foreach (var post in Model.Posts)
+        {
+            <div class="tweets">
+                <div class="user-pics"><img src="~/img/yeniuye.png" alt="user3"></div>
+                <div class="user-content-box">
+                    <div class="user-names">
+                        <h1 class="full-name">@Model.User.Username</h1>
+                        <p class="time">@post.PostedOn.ToString("g")</p>
+                    </div>
+
+                    <div class="user-content">
+                        <p>@post.Content</p>
+                    </div>
+
+                    <div class="content-icons">
+                        <i class="far fa-comment blue"> 109</i>
+                        <i class="fas fa-retweet green"> 865</i>
+                        <i class="far fa-heart red">1.6k</i>
+                        <i class="fas fa-chevron-up blue toggle-section"></i>
+                
+                    </div>
+
+
+
+                </div>
+            </div>
+        }
     }
 
     <hr>

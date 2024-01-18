@@ -1,18 +1,30 @@
 ﻿@using System.Web
 @using TwitterClone.Entity;
 @model TwitterClone.Models.SearchModel
+<link rel="stylesheet" href="~/css/main.css">
 
 
 <div class="container">
-    <h2>Arama Sonuçları</h2>
+    <h2>Search Results</h2>
+    <div class="user-tab-5">
+        <a class="tab-5-nav" href="#">Post</a>
+        <a class="tab-5-nav" href="#">Persons</a>
+    </div>
     @if (Model.SearchResults.Any())
     {
         <ul>
             @foreach (var user in Model.SearchResults)
             {
                 <li>
+                    <div class="tweets">
+                        <div class="user-pics"><img src="~/img/yeniuye.png" alt="user3"></div>
+                        <div class="user-content-box">
+                            <div class="user-names">
+                                <h1 class="full-name">@user.Username</h1>
+                                
+                            </div>
                     <a href="@Url.Action("Profile","User", new{username =user.Username})">@user.Username</a>
-                    
+
                 </li>
             }
         </ul>
@@ -23,15 +35,33 @@
         <ul>
             @foreach (var post in Model.PostSearch)
             {
-                <li>
 
-                    <p>@post.Content</p>
+                <li>
+                    <div class="tweets">
+                        <div class="user-pics"><img src="~/img/yeniuye.png" alt="user3"></div>
+                        <div class="user-content-box">
+                            <div class="user-names">
+                                <h1 class="full-name">@post.User.Username</h1>
+                                <p class="time">@post.PostedOn.ToString("g")</p>
+                            </div>
+
+
+                            <p>@post.Content</p>
+                            <div class="content-icons">
+                                <i class="far fa-comment blue"> 109</i>
+                                <i class="fas fa-retweet green"> 865</i>
+                                <i class="far fa-heart red">1.6k</i>
+                                <i class="fas fa-chevron-up blue toggle-section"></i>
+
+                            </div>
 
                 </li>
             }
         </ul>
+
+
     }
-    else 
+    else
     {
         <p>Arama sonucu bulunamadı.</p>
     }

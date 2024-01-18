@@ -9,7 +9,10 @@ namespace TwitterClone.Models
         public List<UserInformationDto> SearchResults { get; set; }
         public List<UserDto> Users { get; set; }
         public List<Post> PostSearch { get; set; }
-        
+        public UserInformationDto User { get; set; }
+
+
+
 
     }
 }

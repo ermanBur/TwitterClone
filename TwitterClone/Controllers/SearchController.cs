@@ -20,7 +20,9 @@ namespace TwitterClone.Controllers
 
         public async Task<IActionResult> Index(string searchQuery)
         {
+            var user = await _userService.GetUserInformationByUsernameAsync(searchQuery);
             var searchResults = _userService.SearchUsers(searchQuery).ToList();
+            
 
             var postSearch = (await _postService.SearchPostsByContentAsync(searchQuery)).ToList();
 
