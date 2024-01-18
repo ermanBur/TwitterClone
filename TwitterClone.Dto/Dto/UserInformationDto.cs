@@ -8,5 +8,7 @@
     public int LikesCount { get; set; }
     public int MessagesCount { get; set; }
     public DateTime JoinedDate { get; set; }
+    public bool IsFollowing { get; set; }
+
 
 }

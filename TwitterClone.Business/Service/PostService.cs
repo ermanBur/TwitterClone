@@ -36,10 +36,10 @@ namespace TwitterClone.Service
             return _postRepository.GetPostById(id);
         }
 
-        public List<Post> GetPostList()
+        /*public List<Post> GetPostList()
         {
             return _postRepository.GetAllPostAsync().Result;
-        }
+        }*/
         public async Task<RePost> RetweetPostAsync(int postId, int userId)
         {
             var rePost = new RePost
@@ -55,6 +55,11 @@ namespace TwitterClone.Service
         public async Task<List<PostDto>> GetPostsByUserIdAsync(int userId)
         {
             return await _postRepository.GetPostsByUserIdAsync(userId);
+        }
+
+        public async Task<List<PostDto>> GetFeedForUserAsync(int userId)
+        {
+            return await _postRepository.GetFeedAsync(userId);
         }
 
     }

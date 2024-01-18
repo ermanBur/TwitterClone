@@ -33,9 +33,30 @@
                 <img src="~/img/yeniuye.png" alt="@Model.User.Username's picture">
             </div>
             <div class="user-tab-1-cta">
-                <div class="cta-4">
-                    <div class="tweet2" style="text-align:center;"><a href="~/Home/EditProfile">Edit Profile</a></div>
-                </div>
+                @if (User.Identity.IsAuthenticated && Model.User.Username == User.Identity.Name)
+                {
+                    <div class="cta-4">
+                        <div class="tweet2" style="text-align:center;"><a href="~/Home/EditProfile">Edit Profile</a></div>
+                    </div>
+                }
+                else if (User.Identity.IsAuthenticated && Model.User.Username != User.Identity.Name)
+                {
+                    if (Model.IsFollowing)
+                    {
+                        <form asp-action="Unfollow" method="post" asp-controller="User">
+                            <input type="hidden" name="followingId" value="@Model.User.Id" />
+                            <button type="submit" class="unfollow-btn">Takibi Bırak</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form asp-action="Follow" method="post" asp-controller="User">
+                            <input type="hidden" name="followingId" value="@Model.User.Id" />
+                            <button type="submit" class="follow-btn">Takip Et</button>
+                        </form>
+                    }
+                }
+
             </div>
         </div>
         <div class="user-tab-2">
@@ -58,15 +79,16 @@
             </div>
         </div>
         <div class="user-tab-4">
-            <a class="tab-4-item" href="#">
-                <h2>48</h2>
+            <a class="tab-4-item" href="#" >
+                <h2>@Model.FollowingsCount</h2>
                 <span>Following</span>
             </a>
-            <a class="tab-4-item" href="#">
-                <h2>30</h2>
+            <a class="tab-4-item" href="#" >
+                <h2>@Model.FollowersCount</h2>
                 <span>Followers</span>
             </a>
         </div>
+
         <div class="user-tab-5">
             <a class="tab-5-nav" href="#">Post</a>
             <a class="tab-5-nav" href="#">Persons</a>
@@ -111,6 +133,22 @@
 
     <hr>
 </div>
+<style>
+    .follow-btn,
+    .unfollow-btn {
+        border-radius: 8px;
+        background-color: #1da1f2;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        margin-top: 10px;
+        cursor: pointer;
+    }
+
+    .unfollow-btn {
+        background-color: #e0245e;
+    }
+</style>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 

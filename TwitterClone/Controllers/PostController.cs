@@ -20,13 +20,13 @@ namespace TwitterClone.Controllers
             _postService = postService;
             _httpContextAccessor = httpContextAccessor;
         }
-        [HttpGet]
+        /*[HttpGet]
         public async Task<ActionResult<List<PostDto>>> GetPostList()
         {
             var list = new List<Post>();
             list = _postService.GetPostList();
             return Ok(list);
-        }
+        }*/
         [HttpGet("{id}")]
         public ActionResult<Post> GetPost(int id)
         {

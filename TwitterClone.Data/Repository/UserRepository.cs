@@ -110,4 +110,32 @@ public class UserRepository : IUserRepository
                              .FirstOrDefaultAsync(u => EF.Functions.Like(u.Username, username));
     }
 
+    public async Task FollowUserAsync(int followerId, int followingId)
+    {
+        var follow = new Follow { FollowerId = followerId, FollowingId = followingId };
+        _context.Follows.Add(follow);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task UnfollowUserAsync(int followerId, int followingId)
+    {
+        var follow = await _context.Follows
+            .FirstOrDefaultAsync(f => f.FollowerId == followerId && f.FollowingId == followingId);
+
+        if (follow != null)
+        {
+            _context.Follows.Remove(follow);
+            await _context.SaveChangesAsync();
+        }
+    }
+    public async Task<int> GetFollowersCountAsync(int userId)
+    {
+        return await _context.Follows.CountAsync(f => f.FollowingId == userId);
+    }
+
+    public async Task<int> GetFollowingsCountAsync(int userId)
+    {
+        return await _context.Follows.CountAsync(f => f.FollowerId == userId);
+    }
+
 }

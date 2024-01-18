@@ -20,10 +20,14 @@ namespace TwitterClone.Controllers
         }
 
         [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var model = new IndexViewModel();
-            model.Posts = _postService.GetPostList();
+            var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var feedPosts = await _postService.GetFeedForUserAsync(currentUserId);
+            var model = new IndexViewModel
+            {
+                Posts = feedPosts
+            };
             return View(model);
         }
 

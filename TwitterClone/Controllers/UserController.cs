@@ -97,21 +97,48 @@ namespace TwitterClone.Controllers
         }
         public async Task<IActionResult> Profile(string username)
         {
-            var userInformation = await _userService.GetUserInformationByUsernameAsync(username);
+            var currentUserIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var currentUserId = string.IsNullOrEmpty(currentUserIdString) ? 0 : int.Parse(currentUserIdString);
+
+            var userInformation = await _userService.GetUserInformationByUsernameAsync(username, currentUserId);
             if (userInformation == null)
             {
                 return NotFound();
             }
 
-            var posts = await _postService.GetPostsByUserIdAsync(userInformation.Id);
+            var followersCount = await _userService.GetUserFollowersCountAsync(userInformation.Id);
+            var followingsCount = await _userService.GetUserFollowingsCountAsync(userInformation.Id);
+            var isFollowing = currentUserId > 0 && await _userService.IsFollowingAsync(currentUserId, userInformation.Id);
 
             var viewModel = new PrivacyViewModel
             {
                 User = userInformation,
-                Posts = posts
+                Posts = userInformation.Posts,
+                FollowersCount = followersCount,
+                FollowingsCount = followingsCount,
+                IsFollowing = isFollowing
             };
 
             return View("~/Views/Home/Privacy.cshtml", viewModel);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Follow(int followingId)
+        {
+            int followerId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            await _userService.FollowUserAsync(followerId, followingId);
+            return RedirectToAction("Profile", new { username = User.Identity.Name });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Unfollow(int followingId)
+        {
+            int followerId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            await _userService.UnfollowUserAsync(followerId, followingId);
+            return RedirectToAction("Profile", new { username = User.Identity.Name });
         }
 
 
