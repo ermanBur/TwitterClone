@@ -19,8 +19,6 @@ public class User
     public string PasswordHash { get; set; }
     public string Salt { get; set; }
     public DateTime JoinDate { get; set; } = DateTime.UtcNow;
-    public List<Follow> Followers { get; set; } = new List<Follow>(); 
-    public List<Follow> Followings { get; set; } = new List<Follow>();
 
 
 
