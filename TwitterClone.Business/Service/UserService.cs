@@ -65,7 +65,7 @@ public class UserService : IUserService
             await _context.SaveChangesAsync();
         }
     }
-    public async Task<UserInformationDto> GetUserInformationByUsernameAsync(string username)
+    public async Task<UserInformationDto> GetUserInformationByUsernameAsync(string username, int currentUserId)
     {
         var user = await _userRepository.GetByUsernameAsync(username);
         if (user == null)
@@ -74,6 +74,8 @@ public class UserService : IUserService
         }
 
         var posts = await _postRepository.GetPostsByUserIdAsync(user.Id);
+        var isFollowing = await _context.Follows.AnyAsync(f => f.FollowerId == currentUserId && f.FollowingId == user.Id);
+
 
         var userInformationDto = new UserInformationDto
         {
@@ -84,32 +86,42 @@ public class UserService : IUserService
             LikesCount = user.Likes.Count,
             MessagesCount = user.MessagesSent.Count + user.MessagesReceived.Count,
             JoinedDate = user.JoinDate,
+            IsFollowing = isFollowing,
             Posts = posts.Select(post => new PostDto
             {
                 Id = post.Id,
                 Username = user.Username,
                 Content = post.Content,
                 PostedOn = post.PostedOn
-            }).ToList()
+            }).ToList(),
+
         };
 
         return userInformationDto;
 
     }
-
-    public IEnumerable<UserInformationDto> SearchUsers(string searchQuery)
+    public async Task FollowUserAsync(int followerId, int followingId)
     {
-            var users = _userRepository.SearchByQuery(searchQuery);
-            var result = new List<UserInformationDto>();
-            foreach (var user in users)
-            {
-                result.Add(new UserInformationDto
-                {
-                    Id = user.Id,
-                    Username = user.Username
-                });
-            }
-            return result;
-        
+        await _userRepository.FollowUserAsync(followerId, followingId);
     }
+
+    public async Task UnfollowUserAsync(int followerId, int followingId)
+    {
+        await _userRepository.UnfollowUserAsync(followerId, followingId);
+    }
+    public async Task<int> GetUserFollowersCountAsync(int userId)
+    {
+        return await _context.Follows.CountAsync(f => f.FollowingId == userId);
+    }
+
+    public async Task<int> GetUserFollowingsCountAsync(int userId)
+    {
+        return await _context.Follows.CountAsync(f => f.FollowerId == userId);
+    }
+
+    public async Task<bool> IsFollowingAsync(int currentUserId, int targetUserId)
+    {
+        return await _context.Follows.AnyAsync(f => f.FollowerId == currentUserId && f.FollowingId == targetUserId);
+    }
+
 }

@@ -81,6 +81,13 @@ namespace TwitterClone.Repository
                                           Content = post.Content,
                                           PostedOn = post.PostedOn,
                                           Username = post.User.Username,
+                                          RePosts = post.RePosts.Count,
+                                          User = new UserDto
+                                          {
+                                              Id = post.User.Id,
+                                              Username = post.User.Username
+                                          }
+
                                       }).ToListAsync();
 
             return posts;
@@ -96,11 +103,31 @@ namespace TwitterClone.Repository
             return rePost;
         }
 
-        public async Task<IEnumerable<Post>> SearchPostsByContentAsync(string searchQuery)
+        public async Task<List<PostDto>> GetFeedAsync(int userId)
         {
-            return await _context.Posts.Include(p => p.User)
-                                 .Where(p => p.Content.Contains(searchQuery))
-                                 .ToListAsync();
+            var userFollowings = await _context.Follows
+                .Where(f => f.FollowerId == userId)
+                .Select(f => f.FollowingId)
+                .ToListAsync();
+
+            var feedPosts = await _context.Posts
+                .Where(p => p.UserId == userId || userFollowings.Contains(p.UserId))
+                .Include(p => p.User)
+                .OrderByDescending(p => p.PostedOn)
+                .Select(post => new PostDto
+                {
+                    Id = post.Id,
+                    Content = post.Content,
+                    PostedOn = post.PostedOn,
+                    Username = post.User != null ? post.User.Username : "Anonymous",
+                    User = post.User != null ? new UserDto { Id = post.User.Id, Username = post.User.Username } : null,
+                    // RePosts sayısını ekleyin eğer bu bilgiye ihtiyacınız varsa.
+                    // RePosts = post.RePosts.Count,
+                })
+                .ToListAsync();
+
+            return feedPosts;
         }
+
     }
 }

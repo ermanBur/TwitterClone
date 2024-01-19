@@ -7,5 +7,6 @@ public class PostDto
     public string Content { get; set; }
     public DateTime PostedOn { get; set; }
     public UserDto User { get; set; }
-    
+    public int RePosts { get; set; }
+
 }

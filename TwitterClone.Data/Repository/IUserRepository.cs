@@ -11,6 +11,11 @@ public interface IUserRepository
     Task<bool> ExistsUserAsync(string username, string email);
     Task<UserInformationDto> GetUserInformationAsync(int userId);
     Task<User> GetByUsernameAsync(string username);
-    IEnumerable<User> SearchByQuery(string searchQuery);
+    Task FollowUserAsync(int followerId, int followingId);
+    Task UnfollowUserAsync(int followerId, int followingId);
+    Task<int> GetFollowersCountAsync(int userId);
+    Task<int> GetFollowingsCountAsync(int userId);
+
+
 
 }

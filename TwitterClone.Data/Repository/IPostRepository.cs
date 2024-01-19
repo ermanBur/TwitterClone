@@ -13,7 +13,8 @@ namespace TwitterClone.Repository
         Task<PostDto> Create(CreatePostDto request, int userId);
         Task<RePost> AddRePostAsync(RePost rePost);
         Task<List<PostDto>> GetPostsByUserIdAsync(int userId);
-        Task<IEnumerable<Post>> SearchPostsByContentAsync(string searchQuery);
+        Task<List<PostDto>> GetFeedAsync(int userId);
+
 
 
     }

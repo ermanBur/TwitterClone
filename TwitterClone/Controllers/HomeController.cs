@@ -20,27 +20,49 @@ namespace TwitterClone.Controllers
         }
 
         [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var model = new IndexViewModel();
-            model.Posts = _postService.GetPostList();
+            var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var feedPosts = await _postService.GetFeedForUserAsync(currentUserId);
+            var model = new IndexViewModel
+            {
+                Posts = feedPosts
+            };
             return View(model);
         }
 
-        public async Task<IActionResult> Privacy()
+        public async Task<IActionResult> Privacy(string username)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var userInformationDto = await _userService.GetUserInformationAsync(int.Parse(userId));
-            var postsDto = await _postService.GetPostsByUserIdAsync(int.Parse(userId));
+            var currentUserIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var currentUserId = string.IsNullOrEmpty(currentUserIdString) ? 0 : int.Parse(currentUserIdString);
+
+            if (string.IsNullOrEmpty(username))
+            {
+                username = User.Identity.Name; 
+            }
+
+            var userInformation = await _userService.GetUserInformationByUsernameAsync(username, currentUserId);
+            if (userInformation == null)
+            {
+                return NotFound();
+            }
+
+            var followersCount = await _userService.GetUserFollowersCountAsync(userInformation.Id);
+            var followingsCount = await _userService.GetUserFollowingsCountAsync(userInformation.Id);
+            var posts = await _postService.GetPostsByUserIdAsync(userInformation.Id);
 
             var viewModel = new PrivacyViewModel
             {
-                Posts = postsDto,
-                User = userInformationDto // PrivacyViewModel'de User özelliğini ekleyin
+                User = userInformation,
+                Posts = posts,
+                FollowersCount = followersCount,
+                FollowingsCount = followingsCount
             };
 
             return View(viewModel);
         }
+
+
 
 
 
@@ -68,7 +90,6 @@ namespace TwitterClone.Controllers
             return View(model);
         }
 
-        // GET: Home/Register
         public IActionResult Register()
         {
             return RedirectToAction("Register", "User");

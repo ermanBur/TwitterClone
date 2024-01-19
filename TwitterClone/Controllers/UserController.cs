@@ -97,61 +97,53 @@ namespace TwitterClone.Controllers
         }
         public async Task<IActionResult> Profile(string username)
         {
-            var userInformation = await _userService.GetUserInformationByUsernameAsync(username);
+            var currentUserIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var currentUserId = string.IsNullOrEmpty(currentUserIdString) ? 0 : int.Parse(currentUserIdString);
+
+            var userInformation = await _userService.GetUserInformationByUsernameAsync(username, currentUserId);
             if (userInformation == null)
             {
                 return NotFound();
             }
 
-            var posts = await _postService.GetPostsByUserIdAsync(userInformation.Id);
+            var followersCount = await _userService.GetUserFollowersCountAsync(userInformation.Id);
+            var followingsCount = await _userService.GetUserFollowingsCountAsync(userInformation.Id);
+            var isFollowing = currentUserId > 0 && await _userService.IsFollowingAsync(currentUserId, userInformation.Id);
 
             var viewModel = new PrivacyViewModel
             {
                 User = userInformation,
-                Posts = posts
+                Posts = userInformation.Posts,
+                FollowersCount = followersCount,
+                FollowingsCount = followingsCount,
+                IsFollowing = isFollowing
             };
 
             return View("~/Views/Home/Privacy.cshtml", viewModel);
         }
 
 
-
-
-        // GET: User/Index
-
-
-        /*// GET: User/Delete/5
-        public IActionResult Delete(int? id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Follow(int followingId)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var user = _userService.GetUserById(id.Value); // GetUserById metodu varsayılan olarak senkron olduğu için 'await' kullanılmıyor
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return View(user);
+            int followerId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            await _userService.FollowUserAsync(followerId, followingId);
+            return RedirectToAction("Profile", new { username = User.Identity.Name });
         }
 
-        // POST: User/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Unfollow(int followingId)
         {
-            var result = await _userService.DeleteUserAsync(id);
-            if (result)
-            {
-                TempData["SuccessMessage"] = "User deleted successfully!";
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "Error occurred while deleting the user.";
-            }
-            return RedirectToAction(nameof(Index));
-        }*/
+            int followerId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            await _userService.UnfollowUserAsync(followerId, followingId);
+            return RedirectToAction("Profile", new { username = User.Identity.Name });
+        }
+
+
+
+
+        
     }
 }

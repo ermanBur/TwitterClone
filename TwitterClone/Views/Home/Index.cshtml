@@ -34,12 +34,22 @@
         foreach (var post in Model.Posts)
         {
             <div class="tweets">
-                <div class="user-pics"><img src="~/img/yeniuye.png" alt="user3"></div>
+                <div class="user-pics">
+                    <img src="~/img/yeniuye.png" alt="@(post.User?.Username ?? "Anonymous")">
+                </div>
                 <div class="user-content-box">
                     <div class="user-names">
-                        <!-- Kullanıcı adına tıklanınca Profile yönlendir -->
                         <h1 class="full-name">
-                            <a asp-controller="User" asp-action="Profile" asp-route-username="@post.User.Username">@post.User.Username</a>
+                            @if (post.User != null)
+                            {
+                                <a asp-controller="User" asp-action="Profile" asp-route-username="@post.User.Username">
+                                    @post.User.Username
+                                </a>
+                            }
+                            else
+                            {
+                                @:Anonymous
+                            }
                         </h1>
                         <p class="time">@post.PostedOn.ToString("g")</p>
                     </div>
@@ -61,6 +71,7 @@
             </div>
         }
     }
+
 
 
     <div class="pagnation">
