@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Authentication.Cookies; // Cookie authentication için gerekli namespace
+using Microsoft.AspNetCore.Authentication.Cookies; 
 using System.Security.Claims;
 using TwitterClone.Service;
 using TwitterClone.Repository;
-using TwitterClone.Contexts; // Claims için gerekli namespace
+using TwitterClone.Contexts; 
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Connection string'i almak için kullanılan yapılandırma
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<TwitterCloneContext>(options =>
     options.UseNpgsql(connectionString));
@@ -22,18 +22,15 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 builder.Services.AddHttpContextAccessor();
-// Logging yapılandırması
 builder.Services.AddLogging(loggingBuilder =>
 {
     loggingBuilder.AddConsole();
     loggingBuilder.AddDebug();
 });
 
-// UserService ve IUserService arasındaki bağımlılığı enjekte eder
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-// Cookie bazlı kimlik doğrulama için gerekli yapılandırma
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -41,14 +38,12 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 }).AddCookie(options =>
 {
-    options.LoginPath = "/User/Login"; // Kullanıcı giriş yapmadığında yönlendirilecek path
-    options.LogoutPath = "/User/Logout"; // Kullanıcı çıkış yaptığında yönlendirilecek path
-    // Diğer cookie ayarları...
+    options.LoginPath = "/User/Login"; 
+    options.LogoutPath = "/User/Logout"; 
 });
 
 var app = builder.Build();
 
-// HTTP request pipeline yapılandırması
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");

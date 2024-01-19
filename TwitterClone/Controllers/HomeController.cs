@@ -57,7 +57,6 @@ namespace TwitterClone.Controllers
                 Posts = posts,
                 FollowersCount = followersCount,
                 FollowingsCount = followingsCount
-                // IsFollowing bilgisini de ekleyebilirsiniz, eğer modelde varsa ve gerekliyse.
             };
 
             return View(viewModel);
@@ -91,7 +90,6 @@ namespace TwitterClone.Controllers
             return View(model);
         }
 
-        // GET: Home/Register
         public IActionResult Register()
         {
             return RedirectToAction("Register", "User");

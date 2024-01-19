@@ -20,13 +20,7 @@ namespace TwitterClone.Controllers
             _postService = postService;
             _httpContextAccessor = httpContextAccessor;
         }
-        /*[HttpGet]
-        public async Task<ActionResult<List<PostDto>>> GetPostList()
-        {
-            var list = new List<Post>();
-            list = _postService.GetPostList();
-            return Ok(list);
-        }*/
+        
         [HttpGet("{id}")]
         public ActionResult<Post> GetPost(int id)
         {
@@ -65,11 +59,7 @@ namespace TwitterClone.Controllers
                 return NotFound();
             }
 
-            // GetPost async değilse ve doğrudan Post dönüyorsa:
-            //return GetPost(newPost.Id); // Eğer GetPost(int id) senkron çalışıyorsa
 
-            // GetPost async ise ve Task<ActionResult<Post>> dönüyorsa:
-            // Eğer GetPost(int id) asenkron çalışıyorsa
         }
 
         [HttpPost("{postId}/retweet")]

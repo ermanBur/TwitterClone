@@ -23,5 +23,4 @@ public interface IUserService
 
 
 
-    // Diğer gerekli metodlar...
 }

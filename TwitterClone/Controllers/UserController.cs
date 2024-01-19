@@ -144,41 +144,6 @@ namespace TwitterClone.Controllers
 
 
 
-        // GET: User/Index
-
-
-        /*// GET: User/Delete/5
-        public IActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var user = _userService.GetUserById(id.Value); // GetUserById metodu varsayılan olarak senkron olduğu için 'await' kullanılmıyor
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return View(user);
-        }
-
-        // POST: User/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var result = await _userService.DeleteUserAsync(id);
-            if (result)
-            {
-                TempData["SuccessMessage"] = "User deleted successfully!";
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "Error occurred while deleting the user.";
-            }
-            return RedirectToAction(nameof(Index));
-        }*/
+        
     }
 }
