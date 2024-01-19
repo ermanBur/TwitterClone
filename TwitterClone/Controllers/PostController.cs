@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using TwitterClone.Dto;
 using TwitterClone.Entity;
@@ -40,6 +41,8 @@ namespace TwitterClone.Controllers
             await _postService.DeletePostById(id);
             return NoContent();
         }
+
+
         [HttpPost]
         public async Task<IActionResult> Create(CreatePostDto createPostDto)
         {

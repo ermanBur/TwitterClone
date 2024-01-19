@@ -202,7 +202,7 @@ ul {
     border-color: #fff;
     border-width: 0px 0.5px;
     height: 150vh;
-    margin: 0px 50px 0px 20px;
+    margin: 0px 0px 0px 0px;
     overflow-y: scroll;
     flex: 3 0 45%;
     background: #fff;
