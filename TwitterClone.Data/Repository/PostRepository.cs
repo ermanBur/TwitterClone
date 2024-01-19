@@ -121,6 +121,7 @@ namespace TwitterClone.Repository
                     PostedOn = post.PostedOn,
                     Username = post.User != null ? post.User.Username : "Anonymous",
                     User = post.User != null ? new UserDto { Id = post.User.Id, Username = post.User.Username } : null,
+                    Likes = _context.Likes.Count(p => p.PostId == post.Id)
                     // RePosts sayısını ekleyin eğer bu bilgiye ihtiyacınız varsa.
                     // RePosts = post.RePosts.Count,
                 })
@@ -135,5 +136,23 @@ namespace TwitterClone.Repository
                       .Where(p => p.Content.Contains(searchQuery))
                       .ToListAsync();
         }
+
+        public async Task<Like> AddLikePostAsync(Like like)
+        {
+            var existingLike = await _context.Likes
+                .FirstOrDefaultAsync(x => x.PostId == like.PostId && x.UserId == like.UserId);
+            if (existingLike != null)
+            {
+                _context.Likes.Remove(existingLike);
+            }
+            else
+            {
+                await _context.Likes.AddAsync(like);
+            }
+            
+            await _context.SaveChangesAsync();
+            return like;
+        }
     }
-}
+    }
+

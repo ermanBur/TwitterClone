@@ -16,6 +16,7 @@ namespace TwitterClone.Repository
         Task<List<PostDto>> GetFeedAsync(int userId);
         Task<IEnumerable<Post>> SearchPostsByContentAsync(string searchQuery);
 
+        Task<Like> AddLikePostAsync(Like like);
 
 
     }

@@ -83,7 +83,23 @@ namespace TwitterClone.Controllers
             return BadRequest(new { message = "Retweet failed." });
         }
 
+        [HttpPost("Post/like/{postId}")]
+        public async Task<IActionResult> Like(int postId)
+        {
+            var userIdString = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!int.TryParse(userIdString, out int userId))
+            {
+                return BadRequest("User ID is invalid.");
+            }
 
+            var like = await _postService.LikePostAsync(postId, userId);
+
+            if (like != null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return RedirectToAction("Index", "Home");
+        }
 
 
     }

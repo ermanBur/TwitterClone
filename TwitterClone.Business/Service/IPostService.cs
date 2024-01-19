@@ -15,6 +15,7 @@ namespace TwitterClone.Service
         Task<List<PostDto>> GetPostsByUserIdAsync(int userId);
         Task<List<PostDto>> GetFeedForUserAsync(int userId);
         Task<IEnumerable<Post>> SearchPostsByContentAsync(string searchQuery);
+        Task<Like> LikePostAsync(int postId, int userId);
 
 
 

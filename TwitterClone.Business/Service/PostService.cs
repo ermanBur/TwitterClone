@@ -69,5 +69,16 @@ namespace TwitterClone.Service
             });
             return posts;
         }
+
+        public async Task<Like> LikePostAsync(int postId, int userId)
+        {
+            var like = new Like
+            {
+                PostId = postId,
+                UserId = userId,
+            };
+
+            return await _postRepository.AddLikePostAsync(like);
+        }
     }
 }

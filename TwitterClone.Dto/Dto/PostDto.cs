@@ -8,5 +8,6 @@ public class PostDto
     public DateTime PostedOn { get; set; }
     public UserDto User { get; set; }
     public int RePosts { get; set; }
+    public int Likes { get; set; }
 
 }

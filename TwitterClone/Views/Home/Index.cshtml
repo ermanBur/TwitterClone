@@ -1,7 +1,6 @@
 ﻿@model IndexViewModel
 @using TwitterClone.Entity;
 
-
 @* orta kısım *@
 <div class="center-flex-container flex-item">
     <div class="home">
@@ -67,11 +66,57 @@
                         </form>
                         <!-- Diğer ikonlar -->
                     </div>
+                    <div class="content-icons">
+                        <!-- Retweet butonu ve sayacı -->
+                        <form action="@Url.Action("Like", "Post", new { postId = post.Id })" method="post">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="like-button">
+                                <i class="far fa-heart red">@post.Likes</i>
+                            </button>
+                        </form>
+                        <!-- Diğer ikonlar -->
+                    </div>
+                    
                 </div>
             </div>
         }
     }
+  
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
+    <script>
+        $(document).ready(function () {
+            // Like butonuna tıklanınca
+            $(".retweet-button").on("click", function (e) {
+                e.preventDefault();
+
+                // Formu serialize ederek verileri al
+                var formData = $(this).closest("form").serialize();
+
+                // Sunucuya AJAX isteği gönder
+                $.ajax({
+                    type: "POST",
+                    url: $(this).closest("form").attr("action"),
+                    data: formData,
+                    success: function (result) {
+                        // Sunucudan dönen sonuca göre gerekli işlemleri yapabilirsiniz
+                        console.log(result);
+
+                        // Örneğin, beğeni sayısını güncelle
+                        var likeCount = parseInt($(this).find(".far.fa-heart").text());
+                        $(this).find(".far.fa-heart").text(likeCount + 1);
+
+                        // Like işlemi başarılıysa ana sayfaya yönlendir
+                        window.location.href = "/Home/Index";
+                    },
+                    error: function (error) {
+                        // Hata durumunda gerekli işlemleri yapabilirsiniz
+                        console.error("Like işlemi başarısız oldu: ", error);
+                    }
+                });
+            });
+        });
+    </script>
 
 
     <div class="pagnation">
@@ -79,3 +124,4 @@
     </div>
 
 </div>
+
