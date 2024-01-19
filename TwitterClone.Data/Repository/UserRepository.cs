@@ -140,4 +140,8 @@ public class UserRepository : IUserRepository
         return await _context.Follows.CountAsync(f => f.FollowerId == userId);
     }
 
+    public IEnumerable<User> SearchByQuery(string searchQuery)
+    {
+        return _context.Users.Where(u => u.Username.Contains(searchQuery)).AsEnumerable();
+    }
 }

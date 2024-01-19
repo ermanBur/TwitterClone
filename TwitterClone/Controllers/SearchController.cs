@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using TwitterClone.Models;
 using TwitterClone.Service;
+using System.Linq; 
 using TwitterClone.Entity;
 using TwitterClone.Dto;
 
@@ -20,7 +21,9 @@ namespace TwitterClone.Controllers
 
         public async Task<IActionResult> Index(string searchQuery)
         {
-            var user = await _userService.GetUserInformationByUsernameAsync(searchQuery);
+            int tempCurrentUserId = 0;
+
+            var user = await _userService.GetUserInformationByUsernameAsync(searchQuery, tempCurrentUserId);
             var searchResults = _userService.SearchUsers(searchQuery).ToList();
             
 

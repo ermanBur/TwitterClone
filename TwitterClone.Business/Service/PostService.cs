@@ -59,5 +59,15 @@ namespace TwitterClone.Service
             return await _postRepository.GetFeedAsync(userId);
         }
 
+        public async Task<IEnumerable<Post>> SearchPostsByContentAsync(string searchQuery)
+        {
+            var posts = await _postRepository.SearchPostsByContentAsync(searchQuery);
+            var result = posts.Select(post => new PostDto
+            {
+                Id = post.Id,
+                Content = post.Content,
+            });
+            return posts;
+        }
     }
 }

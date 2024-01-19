@@ -14,6 +14,7 @@ namespace TwitterClone.Repository
         Task<RePost> AddRePostAsync(RePost rePost);
         Task<List<PostDto>> GetPostsByUserIdAsync(int userId);
         Task<List<PostDto>> GetFeedAsync(int userId);
+        Task<IEnumerable<Post>> SearchPostsByContentAsync(string searchQuery);
 
 
 

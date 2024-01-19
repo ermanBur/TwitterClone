@@ -129,5 +129,11 @@ namespace TwitterClone.Repository
             return feedPosts;
         }
 
+        public async Task<IEnumerable<Post>> SearchPostsByContentAsync(string searchQuery)
+        {
+            return await _context.Posts.Include(p => p.User)
+                      .Where(p => p.Content.Contains(searchQuery))
+                      .ToListAsync();
+        }
     }
 }

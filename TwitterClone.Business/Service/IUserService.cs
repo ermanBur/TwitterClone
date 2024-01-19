@@ -19,6 +19,7 @@ public interface IUserService
     Task<int> GetUserFollowersCountAsync(int userId);
     Task<int> GetUserFollowingsCountAsync(int userId);
     Task<bool> IsFollowingAsync(int currentUserId, int targetUserId);
+    IEnumerable<UserInformationDto> SearchUsers(string searchTerm);
 
 
 

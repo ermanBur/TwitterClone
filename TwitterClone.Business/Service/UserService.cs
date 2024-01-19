@@ -29,7 +29,7 @@ public class UserService : IUserService
 
     public async Task CreateUserAsync(User user, string password)
     {
-         await _userRepository.CreateUserAsync(user, password);
+        await _userRepository.CreateUserAsync(user, password);
     }
 
     public async Task<IEnumerable<User>> GetUserFollowersAsync(int userId)
@@ -124,4 +124,28 @@ public class UserService : IUserService
         return await _context.Follows.AnyAsync(f => f.FollowerId == currentUserId && f.FollowingId == targetUserId);
     }
 
+    public IEnumerable<UserInformationDto> SearchUsers(string searchQuery)
+    {
+        var users = _userRepository.SearchByQuery(searchQuery);
+
+        var result = new List<UserInformationDto>();
+
+        foreach (var user in users)
+
+        {
+
+            result.Add(new UserInformationDto
+
+            {
+
+                Id = user.Id,
+
+                Username = user.Username
+
+            });
+
+        }
+
+        return result;
+    }
 }

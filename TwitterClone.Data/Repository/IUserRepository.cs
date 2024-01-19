@@ -15,6 +15,7 @@ public interface IUserRepository
     Task UnfollowUserAsync(int followerId, int followingId);
     Task<int> GetFollowersCountAsync(int userId);
     Task<int> GetFollowingsCountAsync(int userId);
+    IEnumerable<User> SearchByQuery(string searchQuery);
 
 
 
