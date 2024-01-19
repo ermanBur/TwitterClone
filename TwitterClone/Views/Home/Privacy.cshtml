@@ -3,11 +3,10 @@
 <link rel="stylesheet" href="~/css/main.css">
 
 <style>
-    .edit-btn,
     .delete-btn {
         border-radius: 8px;
         background-color: #1da1f2;
-        color:white;
+        color: white;
         border: 0px solid #3498db; /* Kenar çizgisi rengi */
     }
 
@@ -77,7 +76,7 @@
     {
         foreach (var post in Model.Posts)
         {
-            <div class="tweets">
+            <div class="tweets" data-post-id="@post.Id">
                 <div class="user-pics"><img src="~/img/yeniuye.png" alt="user3"></div>
                 <div class="user-content-box">
                     <div class="user-names">
@@ -85,7 +84,6 @@
                         <p class="time">@post.PostedOn.ToString("g")</p>
                         <!-- Açılır/Kapanır Alan -->
                         <div class="toggle-section-content" style="display: none; background-color: white; padding: 6px; margin-left:87px">
-                            <button class="edit-btn">Edit</button>
                             <button class="delete-btn">Delete</button>
                         </div>
                     </div>
@@ -99,7 +97,7 @@
                         <i class="fas fa-retweet green"> 865</i>
                         <i class="far fa-heart red">1.6k</i>
                         <i class="fas fa-chevron-up blue toggle-section"></i>
-                
+
                     </div>
 
 
@@ -131,8 +129,36 @@
 
         // Sil butonuna tıklanınca
         $(".delete-btn").click(function () {
-            // Silme işlemini burada gerçekleştirin
-            alert("Sil butonuna tıklandı!");
+            var postId = $(this).closest('.tweets').data('post-id');
+
+            // Kullanıcıya onay al
+            var confirmDelete = confirm("Silmek istediğinize emin misiniz?");
+
+            if (confirmDelete) {
+                // 'self' değişkenini kullanarak 'this' bağlamını tutun
+                var self = $(this);
+
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/Post/DeletePostById/' + postId,
+                    success: function () {
+                        // Silme işlemi başarılıysa, tweeti sayfa üzerinden kaldır
+                        self.closest('.tweets').remove();
+
+                        // Başarı mesajını görüntüle
+                        alert("Başarıyla silindi!");
+                    },
+                    error: function () {
+                        // Silme işlemi başarısız olursa hata mesajını görüntüle
+                        alert("Silme işlemi başarısız!");
+                    }
+                });
+            } else {
+                // Kullanıcı "Hayır" derse, hiçbir şey yapma
+                alert("Silme işlemi iptal edildi.");
+            }
         });
     });
+
+
 </script>
