@@ -1,5 +1,10 @@
 ﻿@model IndexViewModel
 @using TwitterClone.Entity;
+@{
+    var combinedPosts = Model.Posts
+                             .OrderByDescending(p => p.IsRetweet ? p.RetweetTime : p.PostedOn)
+                             .ToList();
+}
 
 @* orta kısım *@
 <div class="center-flex-container flex-item">
@@ -28,58 +33,54 @@
 
     </div>
     <!-- User Content -->
-    @if (Model != null && Model.Posts.Any())
+    @foreach (var post in combinedPosts)
     {
-        foreach (var post in Model.Posts)
-        {
-            <div class="tweets">
-                <div class="user-pics">
-                    <img src="~/img/yeniuye.png" alt="@(post.User?.Username ?? "Anonymous")">
-                </div>
-                <div class="user-content-box">
+        <div class="tweets">
+            <div class="user-pics">
+                <!-- Burada kullanıcı profil resmi için dinamik bir yol belirlemeniz gerekebilir -->
+                <img src="~/img/yeniuye.png" alt="@(post.User?.Username ?? "Anonymous")">
+            </div>
+            <div class="user-content-box">
+                @if (post.IsRetweet && post.RetweetedBy != null)
+                {
+                    <!-- Retweetlenen post içeriği -->
+                    <div class="retweet-indicator">
+                        Retweeted by @Html.ActionLink(post.RetweetedBy.Username, "Profile", "User", new { username = post.RetweetedBy.Username }, null)
+                    </div>
+                    <!-- Kullanıcının orijinal postunun yazarını göster -->
                     <div class="user-names">
-                        <h1 class="full-name">
-                            @if (post.User != null)
-                            {
-                                <a asp-controller="User" asp-action="Profile" asp-route-username="@post.User.Username">
-                                    @post.User.Username
-                                </a>
-                            }
-                            else
-                            {
-                                @:Anonymous
-                            }
-                        </h1>
+                        <h1 class="full-name">@Html.ActionLink(post.User?.Username, "Profile", "User", new { username = post.User?.Username }, null)</h1>
+                        <p class="time">@post.RetweetTime?.ToString("g")</p>
+                    </div>
+                }
+                else
+                {
+                    <!-- Orijinal post içeriği -->
+                    <div class="user-names">
+                        <h1 class="full-name">@Html.ActionLink(post.User?.Username, "Profile", "User", new { username = post.User?.Username }, null)</h1>
                         <p class="time">@post.PostedOn.ToString("g")</p>
                     </div>
-                    <div class="user-content">
-                        <p>@post.Content</p>
-                    </div>
-                    <!-- Post altındaki ikonlar -->
-                    <div class="content-icons">
-                        <!-- Retweet butonu ve sayacı -->
-                        <form action="@Url.Action("Retweet", "Post", new { postId = post.Id })" method="post">
-                            @Html.AntiForgeryToken()
-                            <button type="submit" class="retweet-button">
-                                <i class="fas fa-retweet green"> @post.RePosts</i>
-                            </button>
-                        </form>
-                        <!-- Diğer ikonlar -->
-                    </div>
-                    <div class="content-icons">
-                        <!-- Retweet butonu ve sayacı -->
-                        <form action="@Url.Action("Like", "Post", new { postId = post.Id })" method="post">
-                            @Html.AntiForgeryToken()
-                            <button type="submit" class="like-button">
-                                <i class="far fa-heart red">@post.Likes</i>
-                            </button>
-                        </form>
-                        <!-- Diğer ikonlar -->
-                    </div>
-                    
+                }
+                <div class="user-content">
+                    <p>@post.Content</p>
+                </div>
+                <div class="content-icons">
+                    <!-- Retweet/Undo Retweet Butonu -->
+                    <form action="@Url.Action("Retweet", "Post", new { postId = post.Id })" method="post">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="retweet-btn">
+                            @(post.IsRetweet ? "Undo Retweet" : "Retweet")
+                        </button>
+                    </form>
                 </div>
             </div>
-        }
+        </div>
+    }
+
+
+    else
+    {
+        <p>No tweets to display.</p>
     }
   
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -117,6 +118,12 @@
             });
         });
     </script>
+
+
+
+
+
+
 
 
     <div class="pagnation">

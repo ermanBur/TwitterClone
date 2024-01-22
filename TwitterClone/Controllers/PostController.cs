@@ -5,7 +5,9 @@ using System.Security.Claims;
 using TwitterClone.Dto;
 using TwitterClone.Entity;
 using TwitterClone.Service;
+using Microsoft.AspNetCore.Mvc;
 using TwitterCloneApplication.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace TwitterClone.Controllers
@@ -65,22 +67,24 @@ namespace TwitterClone.Controllers
 
         }
 
-        [HttpPost("{postId}/retweet")]
+        [HttpPost("retweet/{postId}")]
         public async Task<IActionResult> Retweet(int postId)
         {
-            var userIdString = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (!int.TryParse(userIdString, out int userId))
             {
                 return BadRequest("User ID is invalid.");
             }
 
-            var rePost = await _postService.RetweetPostAsync(postId, userId);
+            var response = await _postService.ToggleRetweetAsync(postId, userId);
 
-            if (rePost != null)
+            if (!response.Success)
             {
-                return Ok(new { message = "Retweeted successfully!" });
+                TempData["Error"] = response.Message;
+                return RedirectToAction("Index", "Home");
             }
-            return BadRequest(new { message = "Retweet failed." });
+
+            return RedirectToAction("Privacy", "Home");
         }
 
         [HttpPost("Post/like/{postId}")]
@@ -100,6 +104,12 @@ namespace TwitterClone.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
+
+
+
+
+
+
 
 
     }

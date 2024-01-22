@@ -98,10 +98,79 @@ namespace TwitterClone.Repository
 
         public async Task<RePost> AddRePostAsync(RePost rePost)
         {
+            rePost.CreatedAt = DateTime.Now;
+
             await _context.RePosts.AddAsync(rePost);
             await _context.SaveChangesAsync();
             return rePost;
         }
+
+        public async Task<bool> HasUserAlreadyRePosted(int postId, int userId)
+        {
+            return await _context.RePosts.AnyAsync(rp => rp.PostId == postId && rp.UserId == userId);
+        }
+
+        public async Task<bool> ToggleRetweetAsync(int postId, int userId)
+        {
+            var retweet = await _context.RePosts
+                .FirstOrDefaultAsync(r => r.PostId == postId && r.UserId == userId);
+
+            if (retweet != null)
+            {
+                _context.RePosts.Remove(retweet);
+            }
+            else
+            {
+                var newRetweet = new RePost
+                {
+                    PostId = postId,
+                    UserId = userId,
+                    CreatedAt = DateTime.Now 
+                };
+                await _context.RePosts.AddAsync(newRetweet);
+            }
+
+            await _context.SaveChangesAsync();
+            return retweet == null;
+        }
+
+        public async Task<IEnumerable<PostDto>> GetRetweetsByUserIdAsync(int userId)
+        {
+            // Önceden kullanıcının ismini al.
+            var username = await _context.Users
+                .Where(u => u.Id == userId)
+                .Select(u => u.Username)
+                .FirstOrDefaultAsync();
+
+            var retweets = await _context.RePosts
+                .Include(r => r.Post)
+                .ThenInclude(p => p.User)
+                .Where(r => r.UserId == userId)
+                .Select(r => new PostDto
+                {
+                    Id = r.PostId,
+                    Content = r.Post.Content,
+                    PostedOn = r.Post.PostedOn,
+                    Username = r.Post.User.Username,
+                    User = new UserDto
+                    {
+                        Id = r.Post.User.Id,
+                        Username = r.Post.User.Username 
+                    },
+                    IsRetweet = true,
+                    RetweetedBy = new UserDto
+                    {
+                        Id = userId,
+                        Username = username 
+                    },
+                    RetweetTime = r.CreatedAt
+                })
+                .ToListAsync();
+
+            return retweets;
+        }
+
+
 
         public async Task<List<PostDto>> GetFeedAsync(int userId)
         {
@@ -110,25 +179,40 @@ namespace TwitterClone.Repository
                 .Select(f => f.FollowingId)
                 .ToListAsync();
 
-            var feedPosts = await _context.Posts
+            // Tüm ilişkili verileri çekmek için Include kullanılıyor.
+            var feedPostsEntities = await _context.Posts
                 .Where(p => p.UserId == userId || userFollowings.Contains(p.UserId))
                 .Include(p => p.User)
-                .OrderByDescending(p => p.PostedOn)
+                .Include(p => p.RePosts)
+                .ToListAsync(); // Bu noktada veritabanından tüm gerekli veriler çekilmiş olmalı.
+
+            // Sıralama için RetweetTime veya PostedOn kullanılıyor.
+            var feedPostsDtos = feedPostsEntities
                 .Select(post => new PostDto
                 {
                     Id = post.Id,
                     Content = post.Content,
                     PostedOn = post.PostedOn,
-                    Username = post.User != null ? post.User.Username : "Anonymous",
+                    Username = post.User?.Username ?? "Anonymous",
                     User = post.User != null ? new UserDto { Id = post.User.Id, Username = post.User.Username } : null,
                     Likes = _context.Likes.Count(p => p.PostId == post.Id)
                     // RePosts sayısını ekleyin eğer bu bilgiye ihtiyacınız varsa.
                     // RePosts = post.RePosts.Count,
+                    RePosts = post.RePosts.Count,
+                    RetweetTime = post.RePosts.Any() ? post.RePosts.Max(r => r.CreatedAt) : (DateTime?)null
                 })
-                .ToListAsync();
+                .OrderByDescending(p => p.RetweetTime ?? p.PostedOn)
+                .ToList();
 
-            return feedPosts;
+            return feedPostsDtos;
         }
+
+        
+
+
+
+
+
 
         public async Task<IEnumerable<Post>> SearchPostsByContentAsync(string searchQuery)
         {
