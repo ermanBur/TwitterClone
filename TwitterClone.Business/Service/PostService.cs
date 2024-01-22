@@ -37,17 +37,35 @@ namespace TwitterClone.Service
             return _postRepository.GetPostById(id);
         }
 
-        
-        public async Task<RePost> RetweetPostAsync(int postId, int userId)
+
+        public async Task<ServiceResponse<RePost>> RetweetPostAsync(int postId, int userId)
         {
+            if (await _postRepository.HasUserAlreadyRePosted(postId, userId))
+            {
+                return new ServiceResponse<RePost>
+                {
+                    Success = false,
+                    ErrorMessage = "You have already retweeted this post."
+                };
+            }
+
             var rePost = new RePost
             {
                 PostId = postId,
                 UserId = userId,
+                // CreatedAt alanı otomatik olarak set edilecek
             };
 
-            return await _postRepository.AddRePostAsync(rePost);
+            await _postRepository.AddRePostAsync(rePost);
+
+            return new ServiceResponse<RePost>
+            {
+                Data = rePost,
+                Success = true
+            };
         }
+
+
 
         public async Task<List<PostDto>> GetPostsByUserIdAsync(int userId)
         {
@@ -57,7 +75,24 @@ namespace TwitterClone.Service
         public async Task<List<PostDto>> GetFeedForUserAsync(int userId)
         {
             return await _postRepository.GetFeedAsync(userId);
+
         }
+        public async Task<List<PostDto>> GetFeedWithRetweetsForUserAsync(int userId)
+        {
+            var feedPosts = await _postRepository.GetFeedAsync(userId);
+            var retweets = await _postRepository.GetRetweetsByUserIdAsync(userId);
+
+            // Feed postları ve retweet'leri birleştirip, zamanlarına göre sırala
+            var feedWithRetweets = feedPosts.Concat(retweets)
+                                            .OrderByDescending(p => p.IsRetweet ? p.RetweetTime : p.PostedOn)
+                                            .ToList();
+
+            return feedWithRetweets;
+        }
+
+
+
+
 
         public async Task<IEnumerable<Post>> SearchPostsByContentAsync(string searchQuery)
         {
@@ -68,6 +103,40 @@ namespace TwitterClone.Service
                 Content = post.Content,
             });
             return posts;
+        }
+
+        public async Task<ServiceResponse<bool>> ToggleRetweetAsync(int postId, int userId)
+        {
+            try
+            {
+                var didRetweet = await _postRepository.ToggleRetweetAsync(postId, userId);
+                return new ServiceResponse<bool>
+                {
+                    Data = didRetweet,
+                    Success = true,
+                    Message = didRetweet ? "Retweeted successfully." : "Retweet removed successfully."
+                };
+            }
+            catch (Exception ex)
+            {
+                // Hata yönetimi
+                return new ServiceResponse<bool>
+                {
+                    Data = false,
+                    Success = false,
+                    Message = ex.Message
+                };
+            }
+        }
+
+        public async Task<IEnumerable<PostDto>> GetRetweetsByUserIdAsync(int userId)
+        {
+            return await _postRepository.GetRetweetsByUserIdAsync(userId);
+        }
+
+        public Task<List<PostDto>> GetRetweetsForUserAsync(int userId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

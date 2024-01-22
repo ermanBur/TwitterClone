@@ -1,5 +1,11 @@
 ﻿@model PrivacyViewModel
 @using TwitterClone.Entity;
+@{
+    var sortedPosts = Model.Posts != null
+        ? Model.Posts.OrderByDescending(p => p.RetweetTime ?? p.PostedOn).ToList()
+        : new List<PostDto>();
+}
+
 <link rel="stylesheet" href="~/css/main.css">
 
 <style>
@@ -95,71 +101,42 @@
         </div>
     </div>
     <hr style="margin-top:0px">
-    @if (Model != null && Model.Posts != null)
+    @if (Model != null && sortedPosts.Any())
     {
-        foreach (var post in Model.Posts)
+        foreach (var post in sortedPosts)
         {
             <div class="tweets">
-                <div class="user-pics"><img src="~/img/yeniuye.png" alt="user3"></div>
+                <div class="user-pics"><img src="~/img/yeniuye.png" alt="@post.User?.Username"></div>
                 <div class="user-content-box">
                     <div class="user-names">
-                        <h1 class="full-name">@Model.User.Username</h1>
-                        <p class="time">@post.PostedOn.ToString("g")</p>
-                        <!-- Açılır/Kapanır Alan -->
-                        <div class="toggle-section-content" style="display: none; background-color: white; padding: 6px; margin-left:87px">
-                            <button class="edit-btn">Edit</button>
-                            <button class="delete-btn">Delete</button>
-                        </div>
+                        <h1 class="full-name">@post.Username</h1>
+                        @if (post.IsRetweet && post.RetweetedBy != null)
+                        {
+                            <span class="retweet-indicator">Retweeted by @post.RetweetedBy?.Username</span>
+                            <p class="time">@post.RetweetTime?.ToString("g")</p>
+                        }
+                        else
+                        {
+                            <p class="time">@post.PostedOn.ToString("g")</p>
+                        }
                     </div>
-
                     <div class="user-content">
                         <p>@post.Content</p>
                     </div>
+                    <!-- Retweet/Undo Retweet Butonu -->
+                    <form asp-action="Retweet" asp-controller="Post" asp-route-postId="@post.Id" method="post">
+                        <button type="submit" class="retweet-btn">
+                            @(post.IsRetweet ? "Undo Retweet" : "Retweet")
+                        </button>
 
+                    </form>
                     <div class="content-icons">
-                        <i class="far fa-comment blue"> 109</i>
-                        <i class="fas fa-retweet green"> 865</i>
-                        <i class="far fa-heart red">1.6k</i>
-                        <i class="fas fa-chevron-up blue toggle-section"></i>
-                
+                        <!-- İçerik ikonları -->
                     </div>
-
-
-
-                </div>
-            </div>
-        }
-    }@if (Model != null && Model.Posts != null)
-    {
-        foreach (var post in Model.Posts)
-        {
-            <div class="tweets">
-                <div class="user-pics"><img src="~/img/yeniuye.png" alt="user3"></div>
-                <div class="user-content-box">
-                    <div class="user-names">
-                        <h1 class="full-name">@Model.User.Username</h1>
-                        <p class="time">@post.PostedOn.ToString("g")</p>
-                    </div>
-
-                    <div class="user-content">
-                        <p>@post.Content</p>
-                    </div>
-
-                    <div class="content-icons">
-                        <i class="far fa-comment blue"> 109</i>
-                        <i class="fas fa-retweet green"> 865</i>
-                        <i class="far fa-heart red">1.6k</i>
-                        <i class="fas fa-chevron-up blue toggle-section"></i>
-                
-                    </div>
-
-
-
                 </div>
             </div>
         }
     }
-
     <hr>
 </div>
 <style>

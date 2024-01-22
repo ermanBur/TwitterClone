@@ -8,5 +8,8 @@ public class PostDto
     public DateTime PostedOn { get; set; }
     public UserDto User { get; set; }
     public int RePosts { get; set; }
+    public bool IsRetweet { get; set; }
+    public UserDto RetweetedBy { get; set; }
+    public DateTime? RetweetTime { get; set; }
 
 }

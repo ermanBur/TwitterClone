@@ -11,10 +11,17 @@ namespace TwitterClone.Service
         Task DeletePostById(int id);
 
         Task<PostDto> CreatePost(CreatePostDto request, int userId);
-        Task<RePost> RetweetPostAsync(int postId, int userId);
+        Task<ServiceResponse<RePost>> RetweetPostAsync(int postId, int userId);
         Task<List<PostDto>> GetPostsByUserIdAsync(int userId);
         Task<List<PostDto>> GetFeedForUserAsync(int userId);
         Task<IEnumerable<Post>> SearchPostsByContentAsync(string searchQuery);
+        Task<ServiceResponse<bool>> ToggleRetweetAsync(int postId, int userId);
+        Task<IEnumerable<PostDto>> GetRetweetsByUserIdAsync(int userId);
+        Task<List<PostDto>> GetRetweetsForUserAsync(int userId);
+        Task<List<PostDto>> GetFeedWithRetweetsForUserAsync(int userId);
+
+
+
 
 
 

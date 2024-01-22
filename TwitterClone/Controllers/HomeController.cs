@@ -23,13 +23,20 @@ namespace TwitterClone.Controllers
         public async Task<IActionResult> Index()
         {
             var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var feedPosts = await _postService.GetFeedForUserAsync(currentUserId);
+
+            // Kullanıcının gönderilerini ve retweetlerini birleştirilen bir liste olarak al
+            var allPosts = await _postService.GetFeedWithRetweetsForUserAsync(currentUserId);
+
             var model = new IndexViewModel
             {
-                Posts = feedPosts
+                Posts = allPosts
             };
+
             return View(model);
         }
+
+
+
 
         public async Task<IActionResult> Privacy(string username)
         {
@@ -38,7 +45,7 @@ namespace TwitterClone.Controllers
 
             if (string.IsNullOrEmpty(username))
             {
-                username = User.Identity.Name; 
+                username = User.Identity.Name;
             }
 
             var userInformation = await _userService.GetUserInformationByUsernameAsync(username, currentUserId);
@@ -50,17 +57,21 @@ namespace TwitterClone.Controllers
             var followersCount = await _userService.GetUserFollowersCountAsync(userInformation.Id);
             var followingsCount = await _userService.GetUserFollowingsCountAsync(userInformation.Id);
             var posts = await _postService.GetPostsByUserIdAsync(userInformation.Id);
+            var retweets = await _postService.GetRetweetsByUserIdAsync(currentUserId);
+
+            var combinedPosts = posts.Concat(retweets).OrderByDescending(p => p.PostedOn).ToList();
 
             var viewModel = new PrivacyViewModel
             {
                 User = userInformation,
-                Posts = posts,
+                Posts = combinedPosts,
                 FollowersCount = followersCount,
                 FollowingsCount = followingsCount
             };
 
             return View(viewModel);
         }
+
 
 
 

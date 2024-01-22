@@ -7,4 +7,6 @@ public class RePost
     public User User { get; set; } // RePost'u yapan kullanıcı
     public int PostId { get; set; }
     public Post Post { get; set; } // Yeniden paylaşılan post
+    public DateTime CreatedAt { get; set; } = DateTime.Now; // Sunucunun lokal zamanını kullanır
+
 }
